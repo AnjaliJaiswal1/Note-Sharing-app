@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:note_sharing_app/Onboarding/onboarding.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+import 'Bottom Navigation/bottom_navigation_bar.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -10,13 +18,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Note Sharing App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const OnboardingScreen(),
+      home: const CustomBottomNavBar(),
     );
   }
 }

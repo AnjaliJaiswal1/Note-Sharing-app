@@ -31,5 +31,49 @@ List<String> onboardingTitle = [
 List<String> onboardingDescription = [
   "Notes getting scattered in your gallery?\nNow you can keep them organized in our\nsubjects show",
   "Get all your queries answered and your\ndoubts solved from people of your stream",
-  "Get study materials for your targeted exams\nand be ready for future",
+  "Get study materials for your targeted exams\nand be ready for future ",
+];
+
+List<String> listViewSvg = [
+  'assets/images/exam.svg',
+  'assets/images/subject.svg',
+  'assets/images/forum.svg',
+];
+
+List<String> listViewTitle = [
+  'Exam Info',
+  'Subject Shelf',
+  'Q/A Forum',
+];
+
+List<String> listViewDescription = [
+  'Get exam release information in one spot',
+  'Exchange note and knowlegde globally',
+  'Get the right solutions it just one click',
+];
+
+List<String> recentViewImage = [
+  'assets/images/circuit.jpg',
+  'assets/images/django.jpg',
+  'assets/images/engineering_drawing.jpg',
+];
+
+List<String> recentViewTitlw= [
+  'Circuit Design',
+  'Django',
+  'Engineering Drawing',
+];
+
+List<String> subjectShelfSvg = [
+  'assets/images/circuit_design.svg',
+  'assets/images/computer_science.svg',
+  'assets/images/oops.svg',
+  'assets/images/data_structure.svg',
+];
+
+List<String> subjectShelfTitle = [
+  'Circuit Design',
+  'Computer Science',
+  'Object Oriented Programming',
+  'Data Structure',
 ];

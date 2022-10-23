@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -14,6 +12,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  double _width = 5;
+  final double _height = 5;
   PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           vertical: 74,
         ),
         child: PageView.builder(
+          physics: const BouncingScrollPhysics(),
           controller: pageController,
           itemCount: 3,
           itemBuilder: (context, pageIndex) {
@@ -51,9 +52,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, listIndex) {
-                      return Container(
-                        height: 5,
-                        width: pageIndex == listIndex ? 20 : 5,
+                      _width = pageIndex == listIndex ? 20 : 5;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.ease,
+                        height: _height,
+                        width: _width,
                         decoration: BoxDecoration(
                           color: pageIndex == listIndex
                               ? primaryColor1
@@ -82,19 +86,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: primaryColor3,
+                    color: textColorBlack.withOpacity(0.6),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      pageIndex++;
                       pageController.animateTo(
-                        pageIndex.toDouble(),
+                        Get.width * 0.9 * (pageIndex + 1),
                         duration: const Duration(milliseconds: 350),
-                        curve: Curves.easeIn,
+                        curve: Curves.ease,
                       );
-                      log(pageIndex.toString());
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -106,7 +108,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   child: Text(
-                    "Next",
+                    pageIndex == 2 ? "Let's get Started!" : "Next",
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
