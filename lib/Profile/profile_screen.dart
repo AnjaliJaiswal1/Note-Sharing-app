@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Profile/profile_details_screen.dart';
+import 'package:note_sharing_app/Profile/settings.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
 
@@ -34,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -102,6 +104,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: textColorBlack.withOpacity(0.6),
                   fontWeight: FontWeight.w400,
                 ),
+              ),
+              const SizedBox(height: 48),
+              ProfileButton(
+                onTap: () {
+                  Get.to(() => const ProfileDetailsScreen());
+                },
+                title: 'Profile details',
+                icons: CupertinoIcons.person_alt,
+              ),
+              const SizedBox(height: 8),
+              ProfileButton(
+                onTap: () {},
+                title: 'Uploaded files',
+                icons: CupertinoIcons.folder_fill,
+              ),
+              const SizedBox(height: 8),
+              ProfileButton(
+                onTap: () {},
+                title: 'Saved files',
+                icons: CupertinoIcons.heart_fill,
+              ),
+              const SizedBox(height: 8),
+              ProfileButton(
+                onTap: () {
+                  Get.to(() => const Settings());
+                },
+                title: 'Settings',
+                icons: Icons.settings_rounded,
+              ),
+              const Spacer(),
+              LargeButton(
+                onPressed: () {},
+                buttonName: 'Logout',
               ),
             ],
           ),
