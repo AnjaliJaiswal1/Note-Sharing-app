@@ -29,3 +29,19 @@ class ArrowBackButton extends StatelessWidget {
     );
   }
 }
+
+class MyTextFormField extends StatelessWidget {
+  
+  const MyTextFormField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(color: primaryColor3)),
+          isDense: true),
+    );
+  }
+}
