@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+double height=Get.height;
+double width=Get.width;
+double height10=Get.height/39.2;
+double width10=Get.width/82.5;
+
 
 Color primaryColor1 = const Color(0xFF5A56BF);
 Color primaryColor2 = const Color(0xFF817ECE);

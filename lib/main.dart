@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-
+import 'package:note_sharing_app/Register/login/phone_login.dart';
+import 'package:note_sharing_app/constants.dart';
 import 'Bottom Navigation/bottom_navigation_bar.dart';
 
 void main() {
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CustomBottomNavBar(),
+      home: LoginPage(),
     );
   }
 }
