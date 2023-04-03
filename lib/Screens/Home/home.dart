@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:note_sharing_app/Home/subject_shelf.dart';
-import 'package:note_sharing_app/Profile/profile_screen.dart';
+import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
+import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/constants.dart';
 
 class Home extends StatefulWidget {

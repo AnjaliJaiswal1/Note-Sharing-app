@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+import '../../constants.dart';
+
+class CreateProfileScreen extends StatefulWidget {
+  const CreateProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<CreateProfileScreen> createState() => _CreateProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _CreateProfileScreenState extends State<CreateProfileScreen> {
+  TextEditingController collegeController = TextEditingController();
+  TextEditingController courseController = TextEditingController();
+  TextEditingController semesterController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,23 +27,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           iconColor: primaryColor1,
         ),
         title: Text(
-          "Profile",
+          "Create Profile",
           style: GoogleFonts.poppins(
             fontSize: 16,
             color: textColorBlack,
             fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: true,
       ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
+              SizedBox(
+                height: height10 * 3,
+              ),
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
@@ -73,36 +77,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               SizedBox(
-                height: 16,
-                width: Get.width,
+                height: height10 * 3,
               ),
-              Text(
-                "Anjali Jaiswal",
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: textColorBlack,
-                  fontWeight: FontWeight.w600,
-                ),
+              MyTextFormField(
+                controller: collegeController,
+                hintText: "University/College",
               ),
-              const SizedBox(height: 8),
-              Text(
-                "Computer Science",
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: textColorBlack,
-                  fontWeight: FontWeight.w400,
-                ),
+              SizedBox(
+                height: height10,
               ),
-              const SizedBox(height: 4),
-              Text(
-                "Anjali Jaiswal " * 6,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: textColorBlack.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                ),
+              MyTextFormField(
+                controller: collegeController,
+                hintText: "Course",
               ),
+              SizedBox(
+                height: height10,
+              ),
+              MyTextFormField(
+                controller: collegeController,
+                hintText: "Year/Semester",
+              ),
+              SizedBox(
+                height: height10 * 5,
+              ),
+              CustomElevatedButton(
+                  child: Text("Update",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )),
+                  onPressed: () {})
             ],
           ),
         ),

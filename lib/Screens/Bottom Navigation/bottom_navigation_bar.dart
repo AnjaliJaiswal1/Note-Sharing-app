@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:note_sharing_app/Chat/chat.dart';
-import 'package:note_sharing_app/Explore/explore.dart';
-import 'package:note_sharing_app/Home/home.dart';
+import 'package:note_sharing_app/Screens/Chat/chat.dart';
+import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Upload/upload.dart';
 import 'package:note_sharing_app/constants.dart';
+
+import '../Explore/explore.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});

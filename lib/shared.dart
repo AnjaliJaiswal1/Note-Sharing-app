@@ -32,8 +32,8 @@ class ArrowBackButton extends StatelessWidget {
 }
 
 class MyTextFormField extends StatelessWidget {
-  Widget? prefixIcon;
-  int? maxLength;
+  final Widget? prefixIcon;
+  final int? maxLength;
   final bool readOnly;
   final int? maxlines;
   final bool ownValidator;
@@ -41,7 +41,9 @@ class MyTextFormField extends StatelessWidget {
   final bool requiredValidator;
   final bool emailValidator;
   final bool mobileNumberValidator;
+  final bool obscureText;
   final String? hintText;
+  final Widget? suffixIcon;
   final FormFieldValidator<String>? validator;
   final TextEditingController controller;
   final TextInputType? keyboardType;
@@ -49,6 +51,8 @@ class MyTextFormField extends StatelessWidget {
   MyTextFormField({
     super.key,
     this.validator,
+    this.obscureText = false,
+    this.suffixIcon,
     this.numValidator = false,
     this.inputFormatters,
     this.keyboardType,
@@ -69,27 +73,24 @@ class MyTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
-          prefixIcon: const Padding(
-            padding: EdgeInsets.all(14.0),
-            child: Text(
-              "+91",
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
           hintText: hintText,
           counterText: "",
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: primaryColor3)),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: primaryColor3, width: 1)),
           border: OutlineInputBorder(
               borderSide: BorderSide(color: primaryColor3, width: 1),
-              borderRadius: const BorderRadius.all(Radius.circular(5))),
+              borderRadius: const BorderRadius.all(Radius.circular(12))),
           isDense: true),
       readOnly: readOnly,
+      obscureText: obscureText,
       maxLines: maxlines,
+      
       textInputAction: TextInputAction.next,
       validator: ownValidator
           ? validator
@@ -122,8 +123,9 @@ class MyTextFormField extends StatelessWidget {
 
 class CustomElevatedButton extends StatelessWidget {
   final Widget child;
-  final VoidCallback?onPressed;
-  const CustomElevatedButton({super.key, required this.child,required this.onPressed});
+  final VoidCallback? onPressed;
+  const CustomElevatedButton(
+      {super.key, required this.child, required this.onPressed});
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
