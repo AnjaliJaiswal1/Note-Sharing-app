@@ -6,14 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class PhoneLoginPage extends StatefulWidget {
+  const PhoneLoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<PhoneLoginPage> createState() => _PhoneLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _PhoneLoginPageState extends State<PhoneLoginPage> {
   TabController? tabController;
 
   @override

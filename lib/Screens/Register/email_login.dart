@@ -109,7 +109,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                       },
                       child: Text(
                         "Register",
-                        style: TextStyle(color: primaryColor2),
+                        style: TextStyle(color: primaryColor1),
                       ))
                 ],
               )

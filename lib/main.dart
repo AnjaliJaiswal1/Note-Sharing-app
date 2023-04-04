@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/Screens/Register/email_login.dart';
@@ -12,6 +13,7 @@ import 'package:note_sharing_app/Screens/Register/register_screen.dart';
 import 'package:note_sharing_app/Screens/settings/settings.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'Screens/Bottom Navigation/bottom_navigation_bar.dart';
+import 'Screens/Onboarding/onboarding.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SafeArea(child: UserLoginPage()),
+      home: Home(),
     );
   }
 }
