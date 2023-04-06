@@ -24,7 +24,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       body: IndexedStack(
         index: bottomNavIndex,
         children: const [
-          Home(),
+          Home( ),
           Explore(),
           Upload(),
           Chat(),

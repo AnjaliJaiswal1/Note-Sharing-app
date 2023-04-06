@@ -6,9 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/constants.dart';
+import 'package:note_sharing_app/models/profile_model.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final  ProfileData?userProfileData;
+  const Home({super.key, this.userProfileData});
 
   @override
   State<Home> createState() => _HomeState();

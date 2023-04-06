@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Register/phone_login.dart';
 import 'package:note_sharing_app/constants.dart';
 
-import '../Register/email_login.dart';
+import '../Register/user_login.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

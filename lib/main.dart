@@ -1,19 +1,13 @@
-import 'dart:developer';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
-import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
-import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
-import 'package:note_sharing_app/Screens/Register/email_login.dart';
-import 'package:note_sharing_app/Screens/Register/phone_login.dart';
-import 'package:note_sharing_app/Screens/Register/register_screen.dart';
-import 'package:note_sharing_app/Screens/settings/settings.dart';
-import 'package:note_sharing_app/constants.dart';
-import 'Screens/Bottom Navigation/bottom_navigation_bar.dart';
-import 'Screens/Onboarding/onboarding.dart';
+import 'package:note_sharing_app/Screens/Register/user_login.dart';
+import 'package:note_sharing_app/Services/login_service.dart';
+import 'package:provider/provider.dart';
+
+import 'Screens/Profile/create_profile.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -21,7 +15,13 @@ void main() {
       statusBarColor: Colors.transparent,
     ),
   );
-  runApp(const MyApp());
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<LoginService>(create: (_) => LoginService()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: const Home(),
     );
   }
 }
