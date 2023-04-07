@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,21 +7,34 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
+import 'package:note_sharing_app/Services/upload_service.dart';
 import 'package:note_sharing_app/constants.dart';
+import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:note_sharing_app/models/profile_model.dart';
 
 class Home extends StatefulWidget {
-  final  ProfileData?userProfileData;
-  const Home({super.key, this.userProfileData});
+  final UserData userData;
+  final ProfileData? userProfileData;
+  const Home({super.key, this.userProfileData, required this.userData});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  // UserData? user;
+  // ProfileData? profileData;
+  @override
+  // void initState() {
+  //   super.initState();
+  //   user = widget.userData;
+  //   profileData = widget.userProfileData;
+  // }
+
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    log(widget.userProfileData!.profile_image.toString());
     return Material(
       child: Container(
         margin: const EdgeInsets.only(
@@ -31,10 +46,15 @@ class _HomeState extends State<Home> {
             elevation: 0,
             leading: GestureDetector(
               onTap: () {
-                Get.to(() => const ProfileScreen());
+                Get.to(() => ProfileScreen(
+                      userData: widget.userData,
+                      userProfileData: widget.userProfileData,
+                    ));
               },
               child: const CircleAvatar(
                 backgroundColor: Colors.white,
+                // foregroundImage:
+                //     NetworkImage(profileData.profile_image),
                 foregroundImage: AssetImage('assets/images/anjali.png'),
               ),
             ),
@@ -46,7 +66,7 @@ class _HomeState extends State<Home> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  "Hi Anjali",
+                  "Hi ${widget.userData.firstName} ",
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -530,7 +550,9 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            var path = await UploadFileService().uploadFile();
+                          },
                           icon: Icon(
                             Icons.chat,
                             size: 24,

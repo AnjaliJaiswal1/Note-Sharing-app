@@ -1,6 +1,7 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
@@ -9,12 +10,19 @@ import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:note_sharing_app/models/profile_model.dart';
 import 'package:note_sharing_app/shared.dart';
 import 'package:provider/provider.dart';
-
+import 'package:xfile/xfile.dart';
+import '../../Services/upload_service.dart';
 import '../../constants.dart';
 
 class CreateProfileScreen extends StatefulWidget {
+  final bool isNew;
   final UserData userData;
-  const CreateProfileScreen({super.key, required this.userData});
+  final ProfileData? profileData;
+  const CreateProfileScreen(
+      {super.key,
+      required this.userData,
+      required this.isNew,
+      this.profileData});
 
   @override
   State<CreateProfileScreen> createState() => _CreateProfileScreenState();
@@ -25,15 +33,38 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   TextEditingController courseController = TextEditingController();
   TextEditingController yearController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  String? collegeId;
+  String? profilePicUrl;
+  XFile? profile;
   GlobalKey<FormState> _createProfileScreen = GlobalKey<FormState>();
   int? gender;
   bool isButtonPressed = false;
   ProfileData? profileData;
+  @override
+  void initState() {
+    super.initState();
+    log("init state");
+    if (widget.profileData != null) {
+      log("message");
+      courseController.text = widget.profileData!.course!;
+      collegeController.text = widget.profileData!.university!;
+      yearController.text = widget.profileData!.year!.toString();
+      descController.text = widget.profileData!.description!;
+      gender = widget.profileData!.gender == 'Male'
+          ? 1
+          : widget.profileData!.gender == 'Female'
+              ? 2
+              : 3;
+      // profilePicUrl = widget.profileData!.profile_image!;
+      collegeId = widget.profileData!.collegeID;
+      log("------------" + gender.toString());
+      log("------------" + widget.profileData!.gender!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    log(widget.userData.id.toString());
-    log(widget.userData.firstName.toString());
+    log("creste profile scree n");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -70,29 +101,42 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            'assets/images/anjali.png',
-                            height: Get.height * 0.125,
-                            width: Get.height * 0.125,
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.high,
-                          ),
+                          child: profile != null
+                              ? const Icon(Icons.person)
+                              : Image.file(
+                                  File(profile!.path),
+                                  // "assets/images/anjali.png",
+                                  height: Get.height * 0.125,
+                                  width: Get.height * 0.125,
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
+                                ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                              color: primaryColor1,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ),
+                              height: 24,
+                              width: 24,
+                              decoration: BoxDecoration(
+                                color: primaryColor1,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: IconButton(
+                                onPressed: () async {
+                                  profile = await UploadFileService()
+                                      .uploadFile()
+                                      .then((value) {
+                                    if (value != null) {
+                                      profilePicUrl = value.path;
+                                    }
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              )),
                         ),
                       ],
                     ),
@@ -130,6 +174,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonFormField(
+                          value: gender,
                           validator: (value) {
                             if (value == null) {
                               return "Required";
@@ -168,25 +213,32 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   setState(() {
                                     isButtonPressed = true;
                                   });
-                                  loginService.createProfile(
-                                      course: courseController.text,
-                                      desc: descController.text,
-                                      university: collegeController.text,
-                                      userId: widget.userData.id,
-                                      year: int.parse(yearController.text),
-                                      gender: gender == 1
-                                          ? "Male"
-                                          : gender == 2
-                                              ? "Female"
-                                              : "Other");
-                                  profileData = loginService.userProfile;
-                                  if (profileData != null) {
-                                    setState(() {
-                                      isButtonPressed = false;
-                                    });
-                                    Get.offAll(Home(
-                                      userProfileData: profileData,
-                                    ));
+                                  if (profile == null) {
+                                    Fluttertoast.showToast(
+                                        msg: "please upload image");
+                                  } else {
+                                    loginService.createProfile(
+                                        course: courseController.text,
+                                        desc: descController.text,
+                                        university: collegeController.text,
+                                        userId: widget.userData.id,
+                                        profileImage: File(profile!.path),
+                                        year: int.parse(yearController.text),
+                                        gender: gender == 1
+                                            ? "Male"
+                                            : gender == 2
+                                                ? "Female"
+                                                : "Other");
+                                    profileData = loginService.userProfile;
+                                    if (profileData != null) {
+                                      setState(() {
+                                        isButtonPressed = false;
+                                      });
+                                      Get.offAll(Home(
+                                        userData: loginService.userData!,
+                                        userProfileData: profileData,
+                                      ));
+                                    }
                                   }
                                 }
                               },
@@ -199,7 +251,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               )
                             : Text("Update",
                                 style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 18),
+                                  textStyle: const TextStyle(fontSize: 16),
                                 )))
                   ],
                 ),

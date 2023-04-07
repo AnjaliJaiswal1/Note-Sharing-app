@@ -40,7 +40,7 @@ class SettingScreen extends StatelessWidget {
                 Icons.delete,
                 color: primaryColor1,
               ),
-              title: Text("Trash Bin"),
+              title:const Text("Trash Bin"),
             ),
             ListTile(
               leading: Icon(

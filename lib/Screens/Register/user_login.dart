@@ -129,6 +129,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                                 await loginService.loginUser(
                                     userName: userNameController.text.trim(),
                                     password: passwordController.text.trim());
+                                await loginService.getProfileDetails();
                                 await loginService.getUserData();
                                 isvalidUser = loginService.isLoggedIn;
                                 if (isvalidUser!) {
@@ -137,8 +138,11 @@ class UserLoginPageState extends State<UserLoginPage> {
                                     isButtonPressed = false;
                                   });
                                   Get.offAll(loginService.userProfile != null
-                                      ? const Home()
-                                      : CreateProfileScreen(
+                                      ? Home(userData: loginService.userData!,
+                                          userProfileData:
+                                              loginService.userProfile,
+                                        )
+                                      : CreateProfileScreen(isNew: false,
                                           userData: loginService.userData!,
                                         ));
                                   isvalidUser = true;

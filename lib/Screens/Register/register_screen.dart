@@ -193,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           log(useremailAlreadyExist.toString());
                           if (loginService.userResponseToken != null) {
                             log(userData.toString());
-                            Get.offAll(CreateProfileScreen(
+                            Get.offAll(CreateProfileScreen(isNew: true,
                               userData: loginService.userData!,
                             ));
                           } else {

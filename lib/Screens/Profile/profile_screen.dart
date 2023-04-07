@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
+import 'package:note_sharing_app/Screens/settings/settings.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
+import '../../models/login_response_model.dart';
+import '../../models/profile_model.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final UserData userData;
+  final ProfileData? userProfileData;
+  const ProfileScreen(
+      {super.key, this.userProfileData, required this.userData});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -47,14 +52,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      'assets/images/anjali.png',
-                      height: Get.height * 0.125,
-                      width: Get.height * 0.125,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: primaryColor2),
+                        borderRadius: BorderRadius.circular(12)),
+                    height: Get.height * 0.125,
+                    width: Get.height * 0.125,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        widget.userProfileData!.profile_image!,
+                        height: Get.height * 0.125,
+                        width: Get.height * 0.125,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.error_outline,
+                          color: primaryColor2,
+                        ),
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
                   ),
                   Padding(
@@ -80,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: Get.width,
               ),
               Text(
-                "Anjali Jaiswal",
+                "${widget.userData.firstName} ${widget.userData.lastName!}",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: textColorBlack,
@@ -89,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                "Computer Science",
+                widget.userProfileData!.course!,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: textColorBlack,
@@ -98,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                "Anjali Jaiswal " * 6,
+                widget.userProfileData!.description!,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   fontSize: 12,
@@ -109,28 +125,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 height: height10 * 2,
               ),
-              const CustomListTile(
+              CustomListTile(
+                onTap: () {
+                  Get.to(() => CreateProfileScreen(
+                        profileData: widget.userProfileData,
+                        isNew: false,
+                        userData: widget.userData,
+                      ));
+                },
                 leadingIcon: Icons.person,
                 title: "Profile Details",
               ),
               SizedBox(
                 height: height10,
               ),
-              const CustomListTile(
+              CustomListTile(
+                onTap: () {},
                 leadingIcon: Icons.upload_file_rounded,
                 title: "Uploaded Files",
               ),
               SizedBox(
                 height: height10,
               ),
-              const CustomListTile(
+              CustomListTile(
+                onTap: () {},
                 leadingIcon: Icons.favorite,
                 title: "Saved Files",
               ),
               SizedBox(
                 height: height10,
               ),
-              const CustomListTile(
+              CustomListTile(
+                onTap: () {
+                  Get.to(() => const SettingScreen());
+                },
                 leadingIcon: Icons.settings,
                 title: "Settings",
               ),
@@ -138,10 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: height10 * 2,
               ),
               CustomElevatedButton(
-                  child: Text("Logout",
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(),
-                      )),
+                  child: Text("Logout", style: GoogleFonts.poppins()),
                   onPressed: () {})
             ],
           ),
@@ -154,15 +179,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 class CustomListTile extends StatelessWidget {
   final String title;
   final IconData leadingIcon;
+  final Function()? onTap;
   const CustomListTile({
     required this.title,
     required this.leadingIcon,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       leading: Container(
         height: 40,
         width: 40,

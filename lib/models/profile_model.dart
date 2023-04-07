@@ -9,7 +9,7 @@ class ProfileData {
   String? university;
   String? course;
   String? collegeID;
-  int? user;
+  int? user;int?year;
   ProfileData({
     this.profile_image,
     this.id,
@@ -19,12 +19,14 @@ class ProfileData {
     this.course,
     this.collegeID,
     this.user,
+    this.year
   });
 
   ProfileData copyWith({
     String? profile_image,
     int? id,
     String? gender,
+    int?year,
     String? description,
     String? university,
     String? course,
@@ -40,6 +42,7 @@ class ProfileData {
       course: course ?? this.course,
       collegeID: collegeID ?? this.collegeID,
       user: user ?? this.user,
+      year: year??this.year
     );
   }
 
@@ -53,6 +56,7 @@ class ProfileData {
       'course': course,
       'collegeID': collegeID,
       'user': user,
+      "year":year
     };
   }
 
@@ -66,6 +70,7 @@ class ProfileData {
       course: map['course'] != null ? map['course'] as String : null,
       collegeID: map['collegeID'] != null ? map['collegeID'] as String : null,
       user: map['user'] != null ? map['user'] as int : null,
+      year: map["year"]
     );
   }
 

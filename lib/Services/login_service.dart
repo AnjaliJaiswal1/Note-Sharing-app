@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:note_sharing_app/models/profile_model.dart';
+import 'package:xfile/xfile.dart';
 
 class LoginService extends ChangeNotifier {
   CreateUserResponse? userResponseToken;
@@ -122,6 +124,7 @@ class LoginService extends ChangeNotifier {
       int? year,
       String? desc,
       String? gender,
+      File?profileImage,
       int? userId}) async {
     try {
       http.Response response = await http.post(
@@ -138,11 +141,11 @@ class LoginService extends ChangeNotifier {
             "description": desc,
             "university": university,
             "course": course,
-            "year": year
+            "year": year,
+            "profile_image":profileImage
           }));
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      log(data.toString() + "--------");
       if (data.containsKey("id")) {
         userProfile = ProfileData.fromMap(data);
         notifyListeners();
@@ -151,6 +154,25 @@ class LoginService extends ChangeNotifier {
     } catch (e) {
       Fluttertoast.showToast(msg: "$e");
       log(e.toString());
+    }
+  }
+
+  getProfileDetails() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse(
+            "https://note-sharing-application.onrender.com/user/api/profile/"),
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer $userToken'
+        },
+      );
+      Map data = jsonDecode(response.body) as Map;
+      if (data.containsKey("id")) {
+        userProfile = ProfileData.fromMap(data as Map<String, dynamic>);
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 }
