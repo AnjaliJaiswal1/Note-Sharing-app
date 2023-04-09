@@ -45,9 +45,10 @@ dependencies:
   hive: ^2.2.3
   build_runner: ^2.3.3
   provider: ^6.0.5
-  xfile: ^1.1.0
+  # xfile: ^1.1.0
   image_picker: ^0.8.7+1
   permission_handler: ^10.2.0
+  hive_generator: ^2.0.0
 
 dev_dependencies:
   flutter_test:

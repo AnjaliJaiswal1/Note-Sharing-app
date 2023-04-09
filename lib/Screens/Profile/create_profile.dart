@@ -10,7 +10,6 @@ import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:note_sharing_app/models/profile_model.dart';
 import 'package:note_sharing_app/shared.dart';
 import 'package:provider/provider.dart';
-import 'package:xfile/xfile.dart';
 import '../../Services/upload_service.dart';
 import '../../constants.dart';
 
@@ -35,7 +34,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   TextEditingController descController = TextEditingController();
   String? collegeId;
   String? profilePicUrl;
-  XFile? profile;
+  // XFile? profile;
   GlobalKey<FormState> _createProfileScreen = GlobalKey<FormState>();
   int? gender;
   bool isButtonPressed = false;
@@ -57,14 +56,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               : 3;
       // profilePicUrl = widget.profileData!.profile_image!;
       collegeId = widget.profileData!.collegeID;
-      log("------------" + gender.toString());
-      log("------------" + widget.profileData!.gender!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log("creste profile scree n");
+    log("creste profile screen");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -101,16 +98,17 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: profile != null
-                              ? const Icon(Icons.person)
-                              : Image.file(
-                                  File(profile!.path),
-                                  // "assets/images/anjali.png",
-                                  height: Get.height * 0.125,
-                                  width: Get.height * 0.125,
-                                  fit: BoxFit.cover,
-                                  filterQuality: FilterQuality.high,
-                                ),
+                          child:
+                              // profile != null
+                              // ? const Icon(Icons.person)
+                              Image.asset(
+                            // File(profile!.path),
+                            "assets/images/anjali.png",
+                            height: Get.height * 0.125,
+                            width: Get.height * 0.125,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(4),
@@ -123,13 +121,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               ),
                               child: IconButton(
                                 onPressed: () async {
-                                  profile = await UploadFileService()
-                                      .uploadFile()
-                                      .then((value) {
-                                    if (value != null) {
-                                      profilePicUrl = value.path;
-                                    }
-                                  });
+                                  // profile = await UploadFileService()
+                                  //     .uploadFile()
+                                  //     .then((value) {
+                                  //   if (value != null) {
+                                  //     profilePicUrl = value.path;
+                                  //   }
+                                  // });
                                 },
                                 icon: const Icon(
                                   Icons.edit,
@@ -197,7 +195,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           ],
                           onChanged: (value) {
                             setState(() {
-                              gender = value;
+                              gender = value as int;
                             });
                           }),
                     ),
@@ -213,33 +211,33 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   setState(() {
                                     isButtonPressed = true;
                                   });
-                                  if (profile == null) {
-                                    Fluttertoast.showToast(
-                                        msg: "please upload image");
-                                  } else {
-                                    loginService.createProfile(
-                                        course: courseController.text,
-                                        desc: descController.text,
-                                        university: collegeController.text,
-                                        userId: widget.userData.id,
-                                        profileImage: File(profile!.path),
-                                        year: int.parse(yearController.text),
-                                        gender: gender == 1
-                                            ? "Male"
-                                            : gender == 2
-                                                ? "Female"
-                                                : "Other");
-                                    profileData = loginService.userProfile;
-                                    if (profileData != null) {
-                                      setState(() {
-                                        isButtonPressed = false;
-                                      });
-                                      Get.offAll(Home(
-                                        userData: loginService.userData!,
-                                        userProfileData: profileData,
-                                      ));
-                                    }
+                                  // if (profile == null) {
+                                  //   Fluttertoast.showToast(
+                                  //       msg: "please upload image");
+                                  // } else {
+                                  loginService.createProfile(
+                                      course: courseController.text,
+                                      desc: descController.text,
+                                      university: collegeController.text,
+                                      userId: widget.userData.id,
+                                      // profileImage: File(profile!.path),
+                                      year: int.parse(yearController.text),
+                                      gender: gender == 1
+                                          ? "Male"
+                                          : gender == 2
+                                              ? "Female"
+                                              : "Other");
+                                  profileData = loginService.userProfile;
+                                  if (profileData != null) {
+                                    setState(() {
+                                      isButtonPressed = false;
+                                    });
+                                    Get.offAll(Home(
+                                      userData: loginService.userData!,
+                                      userProfileData: profileData,
+                                    ));
                                   }
+                                  // }
                                 }
                               },
                         child: isButtonPressed

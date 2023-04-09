@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 
-// part 'logged_in.g.dart';
+part 'logged_in.g.dart';
 
 @HiveType(typeId:0)
 class UserDataHive extends HiveObject {

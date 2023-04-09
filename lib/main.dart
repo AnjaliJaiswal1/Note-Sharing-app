@@ -1,20 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:note_sharing_app/Screens/Home/home.dart';
+import 'package:hive/hive.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:provider/provider.dart';
 
-import 'Screens/Profile/create_profile.dart';
 
-void main() {
+void main() async{
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ),
   );
+
 
   runApp(MultiProvider(
     providers: [
