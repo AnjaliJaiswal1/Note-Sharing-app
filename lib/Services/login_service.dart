@@ -3,9 +3,15 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
+import 'package:note_sharing_app/constants.dart';
+import 'package:note_sharing_app/main.dart';
 import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:note_sharing_app/models/profile_model.dart';
+
+import '../Hive/user_profile.dart';
 // import 'package:xfile/xfile.dart';
 
 class LoginService extends ChangeNotifier {
@@ -14,8 +20,11 @@ class LoginService extends ChangeNotifier {
   bool? isuserEmailAlreadyExist = false;
   bool isLoggedIn = false;
   String? userToken;
-  UserData? userData;
-  ProfileData? userProfile;
+  UserDataHive? userData;
+  UserProfileDataHive? userProfile;
+  bool refreshToken = false;
+  // var box = Hive.box<UserDataHive>("UserInfo");
+
   registerUser(
       {required String firstName,
       required String lastName,
@@ -61,8 +70,9 @@ class LoginService extends ChangeNotifier {
   loginUser({required String userName, required String password}) async {
     try {
       http.Response loginResponse = await http.post(
-          Uri.parse(
-              "https://note-sharing-application.onrender.com/user/api/login/"),
+          Uri.parse(refreshToken
+              ? "https://note-sharing-application.onrender.com/user/api/login/refresh:refresh_token"
+              : "https://note-sharing-application.onrender.com/user/api/login/"),
           headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'},
           body: jsonEncode({"username": userName, "password": password}));
 
@@ -76,7 +86,11 @@ class LoginService extends ChangeNotifier {
         notifyListeners();
         userToken = userResponseToken!.access;
         notifyListeners();
-        log(userResponseToken.toString());
+        // log(userResponseToken.toString());
+      } else if (data.containsKey("message") &&
+          data.containsValue("Token is invalid or expired")) {
+        refreshToken = true;
+        notifyListeners();
       } else if (data.containsKey("error") &&
           data.containsValue("Invalid credentials")) {
         log("worng credentials");
@@ -102,16 +116,17 @@ class LoginService extends ChangeNotifier {
 
       Map<String, dynamic> data =
           jsonDecode(loginResponse.body) as Map<String, dynamic>;
-      log(data.toString());
+      // log(data.toString());
       if (data.containsKey("id")) {
-        log("user data exists");
-        userData = UserData.fromMap(data);
+        // log("user data exists");
+        userData = UserDataHive.fromMap(data);
+        box.put(userDataKey, userData!);
         notifyListeners();
       } else {
-        log("user dadta is null");
+        // log("user dadta is null");
         userData = null;
       }
-      log(loginResponse.body.toString());
+      // log(loginResponse.body.toString());
     } catch (e) {
       Fluttertoast.showToast(msg: "$e");
       log(e.toString());
@@ -124,7 +139,7 @@ class LoginService extends ChangeNotifier {
       int? year,
       String? desc,
       String? gender,
-      File?profileImage,
+      File? profileImage,
       int? userId}) async {
     try {
       http.Response response = await http.post(
@@ -142,12 +157,14 @@ class LoginService extends ChangeNotifier {
             "university": university,
             "course": course,
             "year": year,
-            "profile_image":profileImage
+            "profile_image": profileImage
           }));
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
       if (data.containsKey("id")) {
-        userProfile = ProfileData.fromMap(data);
+        userProfile = UserProfileDataHive.fromMap(data);
+        box.put(userProfileKey, userProfile!);
+        log("-----------------++-----------${box.get(userProfileKey)}");
         notifyListeners();
       }
       log(data.toString());
@@ -169,7 +186,10 @@ class LoginService extends ChangeNotifier {
       );
       Map data = jsonDecode(response.body) as Map;
       if (data.containsKey("id")) {
-        userProfile = ProfileData.fromMap(data as Map<String, dynamic>);
+        userProfile = UserProfileDataHive.fromMap(data as Map<String, dynamic>);
+        box.put(userProfileKey, userProfile);
+        notifyListeners();
+        log("${box.get(userProfileKey)} __________________________");
       }
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());

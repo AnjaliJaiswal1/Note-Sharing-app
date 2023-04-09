@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,7 @@ import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
 import 'package:provider/provider.dart';
-
+import '../../main.dart';
 import 'register_screen.dart';
 
 class UserLoginPage extends StatefulWidget {
@@ -92,7 +91,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                                 isVisible = false;
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.visibility,
                               color: primaryColor3,
                               size: 22,
@@ -103,7 +102,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                                 isVisible = true;
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.visibility_off,
                               color: primaryColor3,
                               size: 22,
@@ -124,7 +123,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                                   isButtonPressed = true;
                                 });
                                 FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
+                                    .requestFocus(FocusNode());
 
                                 await loginService.loginUser(
                                     userName: userNameController.text.trim(),
@@ -137,13 +136,15 @@ class UserLoginPageState extends State<UserLoginPage> {
                                   setState(() {
                                     isButtonPressed = false;
                                   });
-                                  Get.offAll(loginService.userProfile != null
-                                      ? Home(userData: loginService.userData!,
-                                          userProfileData:
-                                              loginService.userProfile,
+                                  Get.offAll(box.get(userProfileKey) != null
+                                      ? Home(
+                                          userData: box.get(userDataKey),
+                                          // userProfileData:
+                                          //     loginService.userProfile,
                                         )
-                                      : CreateProfileScreen(isNew: false,
-                                          userData: loginService.userData!,
+                                      : CreateProfileScreen(
+                                          isNew: false,
+                                          userData: box.get(userDataKey),
                                         ));
                                   isvalidUser = true;
                                 } else {
@@ -180,7 +181,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                           onPressed: () {
                             Get.offAll(const RegisterScreen());
                           },
-                          child: Text(
+                          child: const Text(
                             "Register",
                             style: TextStyle(color: primaryColor1),
                           ))

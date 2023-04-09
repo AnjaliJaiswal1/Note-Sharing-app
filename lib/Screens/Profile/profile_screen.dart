@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
 import 'package:note_sharing_app/Screens/settings/settings.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
-import '../../models/login_response_model.dart';
-import '../../models/profile_model.dart';
+import '../../Hive/user_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final UserData userData;
-  final ProfileData? userProfileData;
+  final UserDataHive userData;
+  final UserProfileDataHive? userProfileData;
   const ProfileScreen(
       {super.key, this.userProfileData, required this.userData});
 
@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: ArrowBackButton(
+        leading: const ArrowBackButton(
           iconColor: primaryColor1,
         ),
         title: Text(
@@ -60,12 +60,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: Get.height * 0.125,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        widget.userProfileData!.profile_image!,
+                      child: Image.asset("assets/images/anjali.png",
+                        // widget.userProfileData!.profile_image!,
                         height: Get.height * 0.125,
                         width: Get.height * 0.125,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Icon(
+                        errorBuilder: (context, error, stackTrace) =>const Icon(
                           Icons.error_outline,
                           color: primaryColor2,
                         ),
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: Get.width,
               ),
               Text(
-                "${widget.userData.firstName} ${widget.userData.lastName!}",
+                "${widget.userData.first_name} ${widget.userData.last_name!}",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: textColorBlack,
@@ -205,9 +205,9 @@ class CustomListTile extends StatelessWidget {
       title: Text(
         title,
         style: GoogleFonts.poppins(
-            textStyle: TextStyle(fontWeight: FontWeight.w400)),
+            textStyle: const TextStyle(fontWeight: FontWeight.w400)),
       ),
-      trailing: Icon(
+      trailing:const Icon(
         Icons.arrow_forward_ios,
         color: primaryColor2,
         size: 18,

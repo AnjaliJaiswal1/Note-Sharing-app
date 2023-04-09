@@ -1,22 +1,19 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
-import 'package:note_sharing_app/models/login_response_model.dart';
-import 'package:note_sharing_app/models/profile_model.dart';
 import 'package:note_sharing_app/shared.dart';
 import 'package:provider/provider.dart';
-import '../../Services/upload_service.dart';
+import '../../Hive/user_profile.dart';
 import '../../constants.dart';
 
 class CreateProfileScreen extends StatefulWidget {
   final bool isNew;
-  final UserData userData;
-  final ProfileData? profileData;
+  final UserDataHive userData;
+  final UserProfileDataHive? profileData;
   const CreateProfileScreen(
       {super.key,
       required this.userData,
@@ -38,7 +35,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   GlobalKey<FormState> _createProfileScreen = GlobalKey<FormState>();
   int? gender;
   bool isButtonPressed = false;
-  ProfileData? profileData;
+  UserProfileDataHive? profileData;
   @override
   void initState() {
     super.initState();
@@ -66,7 +63,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: ArrowBackButton(
+        leading:const ArrowBackButton(
           iconColor: primaryColor1,
         ),
         title: Text(
@@ -234,7 +231,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                     });
                                     Get.offAll(Home(
                                       userData: loginService.userData!,
-                                      userProfileData: profileData,
+                                      // userProfileData: profileData,
                                     ));
                                   }
                                   // }

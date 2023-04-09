@@ -1,20 +1,31 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:hive/hive.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
+import 'package:note_sharing_app/Hive/user_profile.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
+import 'package:note_sharing_app/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'Screens/Home/home.dart';
 
-void main() async{
-
+late Box box;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserDataHiveAdapter());
+  Hive.registerAdapter(UserProfileDataHiveAdapter());
+  box = await Hive.openBox("UserInfo");
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ),
   );
-
 
   runApp(MultiProvider(
     providers: [
@@ -35,7 +46,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UserLoginPage(),
+      home: ValueListenableBuilder<Box>(
+          valueListenable: box.listenable(),
+          builder: (context, userbox, _) {
+            log("abc bckajdfla dfljkadlfsak;ldfj");
+            UserDataHive? temp = userbox.get(userDataKey);
+            UserProfileDataHive? profile = userbox.get(userProfileKey);
+            return temp != null && profile != null
+                ? Home(
+                    userData: temp,
+                  )
+                : const UserLoginPage();
+          }),
     );
   }
 }
