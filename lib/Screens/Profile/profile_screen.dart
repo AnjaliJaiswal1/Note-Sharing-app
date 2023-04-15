@@ -9,10 +9,10 @@ import 'package:note_sharing_app/shared.dart';
 import '../../Hive/user_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final UserDataHive userData;
+  final UserDataHive? userData;
   final UserProfileDataHive? userProfileData;
   const ProfileScreen(
-      {super.key, this.userProfileData, required this.userData});
+      {super.key, this.userProfileData, this.userData});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: Get.width,
               ),
               Text(
-                "${widget.userData.first_name} ${widget.userData.last_name!}",
+                "${widget.userData!.first_name} ${widget.userData!.last_name!}",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: textColorBlack,
@@ -130,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Get.to(() => CreateProfileScreen(
                         profileData: widget.userProfileData,
                         isNew: false,
-                        userData: widget.userData,
+                        userData: widget.userData!,
                       ));
                 },
                 leadingIcon: Icons.person,

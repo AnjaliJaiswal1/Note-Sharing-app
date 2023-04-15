@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
+import 'package:note_sharing_app/Screens/QnA%20Forum/qna_forum.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/Upload/upload.dart';
 import 'package:note_sharing_app/constants.dart';
@@ -25,15 +26,15 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
-        children: [
-          Home(userData: Provider.of<LoginService>(context).userData!),
-          const Explore(),
-          const Upload(),
-          const Chat(),
+        children: const [
+          Home(),
+          Explore(),
+          QnA_Forum(),
+          Chat(),
         ],
       ),
       bottomNavigationBar: Container(
-        height: Get.height * 0.08,
+        height: height10 * 3.5,
         width: Get.width * 0.9,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -119,13 +120,13 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Icon(
-                      Icons.add_box,
+                      Icons.question_mark,
                       size: 28,
                       color:
                           bottomNavIndex == 2 ? primaryColor1 : primaryColor3,
                     ),
                     Text(
-                      "Upload",
+                      "QnA Forum",
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color:
