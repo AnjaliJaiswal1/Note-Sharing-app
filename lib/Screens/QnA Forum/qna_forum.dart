@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Services/qna_service.dart';
+import 'package:note_sharing_app/models/Qna_model.dart';
+import 'package:http/http.dart' as http;
 
 import '../../constants.dart';
 import '../Profile/profile_screen.dart';
@@ -15,7 +21,37 @@ class QnA_Forum extends StatefulWidget {
   State<QnA_Forum> createState() => _QnA_ForumState();
 }
 
+QnaModel? qnaModel;
+
 class _QnA_ForumState extends State<QnA_Forum> {
+  Future getQnAPosts() async {
+    try {
+      http.Response qnaPosts = await http.get(
+        Uri.parse("https://note-sharing-application.onrender.com/qna/"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjQ3NzI2LCJpYXQiOjE2ODE2NDQxMjYsImp0aSI6IjExMGM3MTVlZGUyMzRiZTY5ZjhlZjdiMzIxN2FjOWE4IiwiaWQiOjF9.LseS0U_brJg4suVkPF_iie7ZUmp5K8rLHceLqJY87-Y"
+        },
+      );
+      if (qnaPosts.statusCode == 200 && qnaPosts.body.isNotEmpty) {
+        Map<String, dynamic> qnaPostsMap =
+            jsonDecode(qnaPosts.body) as Map<String, dynamic>;
+        qnaModel = QnaModel.fromJson(qnaPostsMap);
+      } else {
+        log("Empty data QnA Posts");
+      }
+    } catch (e) {
+      log('QnA Posts Exception : $e');
+    }
+  }
+
+  @override
+  void initState() {
+    getQnAPosts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,12 +118,20 @@ class _QnA_ForumState extends State<QnA_Forum> {
         child: Container(
           width: Get.width,
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: const [
-              QnAPost(),
-              QnAPost(),
-            ],
-          ),
+          child: qnaModel != null
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: qnaModel!.data!.length,
+                  itemBuilder: (context, index) {
+                    return QnAPost(index: index);
+                  },
+                )
+              : const SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(color: primaryColor1),
+              ),
         ),
       ),
     );
@@ -95,22 +139,25 @@ class _QnA_ForumState extends State<QnA_Forum> {
 }
 
 class QnAPost extends StatelessWidget {
-  const QnAPost({
+  int index;
+  QnAPost({
     super.key,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
           Row(
             children: [
               const CircleAvatar(
                 backgroundColor: Colors.white,
-                foregroundImage:
-                    AssetImage('assets/images/anjali.png'),
+                foregroundImage: AssetImage('assets/images/anjali.png'),
                 minRadius: 24,
               ),
               const SizedBox(width: 16),
@@ -151,7 +198,16 @@ class QnAPost extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            qnaModel!.data![0].questionTitle!,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: textColorBlack,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            qnaModel!.data![index].questionDescription!,
             style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -159,10 +215,15 @@ class QnAPost extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset("assets/images/book.jpg"),
-          ),
+          qnaModel!.data![index].questionImage != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset("assets/images/book.jpg"),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
