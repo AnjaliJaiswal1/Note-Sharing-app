@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Register/phone_login.dart';
 import 'package:note_sharing_app/constants.dart';
+import 'package:note_sharing_app/shared.dart';
 
 import '../Register/user_login.dart';
 
@@ -92,7 +93,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     color: textColorBlack.withOpacity(0.6),
                   ),
                 ),
-                ElevatedButton(
+                LargeButton(
                   onPressed: () {
                     if (pageIndex == 2) {
                       Get.offAll(UserLoginPage());
@@ -106,22 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       });
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    maximumSize: Size(Get.width * 0.8, 50),
-                    minimumSize: Size(Get.width * 0.8, 50),
-                    backgroundColor: primaryColor1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    pageIndex == 2 ? "Let's get Started!" : "Next",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: textColorWhite,
-                    ),
-                  ),
+                  buttonName: pageIndex == 2 ? "Let's get Started!" : "Next",
                 ),
               ],
             );
