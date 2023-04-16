@@ -58,7 +58,7 @@ class UserLoginPageState extends State<UserLoginPage> {
                   SizedBox(
                     height: height10 * 2,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.co_present_rounded,
                     size: 120,
                     color: primaryColor2,

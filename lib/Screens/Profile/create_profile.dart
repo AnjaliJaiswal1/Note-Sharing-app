@@ -63,7 +63,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading:const ArrowBackButton(
+        leading: const ArrowBackButton(
           iconColor: primaryColor1,
         ),
         title: Text(
@@ -212,27 +212,38 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   //   Fluttertoast.showToast(
                                   //       msg: "please upload image");
                                   // } else {
-                                  loginService.createProfile(
-                                      course: courseController.text,
-                                      desc: descController.text,
-                                      university: collegeController.text,
-                                      userId: widget.userData.id,
-                                      // profileImage: File(profile!.path),
-                                      year: int.parse(yearController.text),
-                                      gender: gender == 1
-                                          ? "Male"
-                                          : gender == 2
-                                              ? "Female"
-                                              : "Other");
-                                  profileData = loginService.userProfile;
-                                  if (profileData != null) {
+                                  try {
+                                    loginService.createProfile(
+                                        course: courseController.text,
+                                        desc: descController.text,
+                                        university: collegeController.text,
+                                        userId: widget.userData.id,
+                                        // profileImage: File(profile!.path),
+                                        year: int.parse(yearController.text),
+                                        gender: gender == 1
+                                            ? "Male"
+                                            : gender == 2
+                                                ? "Female"
+                                                : "Other");
+                                    profileData = loginService.userProfile;
+                                    if (profileData != null) {
+                                      setState(() {
+                                        isButtonPressed = false;
+                                      });
+                                      log("-------" + profileData.toString());
+                                      Get.offAll(Home(
+                                        userData: loginService.userData!,
+                                        // userProfileData: profileData,
+                                      ));
+                                    } else {
+                                      setState(() {
+                                        isButtonPressed = false;
+                                      });
+                                    }
+                                  } catch (e) {
                                     setState(() {
                                       isButtonPressed = false;
                                     });
-                                    Get.offAll(Home(
-                                      userData: loginService.userData!,
-                                      // userProfileData: profileData,
-                                    ));
                                   }
                                   // }
                                 }

@@ -31,9 +31,10 @@ class _HomeState extends State<Home> {
     return Material(
       child: Container(
         margin: const EdgeInsets.only(
-          top: 24,
+          top: 32,
         ),
         child: ValueListenableBuilder<Box>(
+
           valueListenable: box.listenable(),
           builder: (context, boxdetails, _) {
             profileData = box.get(userProfileKey);
@@ -107,6 +108,31 @@ class _HomeState extends State<Home> {
                       CupertinoIcons.bell_fill,
                       color: primaryColor1,
                       size: 24,
+                      
+//            valueListenable: box.listenable(),
+//            builder: (context, boxdetails, _) {
+//              profileData = box.get(userProfileKey);
+//              log(box.get(userProfileKey).toString());
+//              return Scaffold(
+//                appBar: AppBar(
+//                  backgroundColor: Colors.white,
+//                  elevation: 0,
+//                  leading: GestureDetector(
+//                    onTap: () {
+//                      // log(profileData.toString());
+//                      // log(box.get(userProfileKey).toString());
+//                      // log(boxdetails.get(userProfileKey).toString());
+//                      // // Get.offAll(UserLoginPage());
+//                      Get.to(() => ProfileScreen(
+//                            userData: widget.userData!,
+//                            // userProfileData: boxdetails.get(userProfileKey),
+//                          ));
+//                    },
+//                    child: CircleAvatar(
+//                      backgroundColor: Colors.white,
+//                      // foregroundImage:
+//                      //     NetworkImage(profileData!.profile_image!)
+//                      foregroundImage: AssetImage('assets/images/anjali.png'),
                     ),
                   ),
                 ],

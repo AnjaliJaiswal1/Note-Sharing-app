@@ -7,6 +7,8 @@ double height10 = Get.height / 39.2;
 double width10 = Get.width / 82.5;
 const String userDataKey = "USERLOGINDATA";
 const String userProfileKey = "USERPROFILEDATA";
+const String tokenHiveKey = "TOKENS";
+
 String girlAvatar =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1tZt2GTv3xusdfAEeIuJj-Po7TUIxUEaTzw&usqp=CAU";
 
