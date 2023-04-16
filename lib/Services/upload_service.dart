@@ -7,7 +7,10 @@ import 'package:note_sharing_app/shared.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/posts_model.dart';
+
 class UploadFileService extends ChangeNotifier {
+  AllPostsModel? allPosts;
   Future<XFile?> pickImage() async {
     final _imagePicker = ImagePicker();
     XFile? image;
@@ -31,8 +34,7 @@ class UploadFileService extends ChangeNotifier {
       required int post_author}) async {
     try {
       http.Response response = await http.post(
-          Uri.parse(
-              "https://note-sharing-application.onrender.com/user/api/post/"),
+          Uri.parse("https://note-sharing-application.onrender.com/post/"),
           headers: {'Content-Type': 'application/json', 'Charset': 'utf-8'},
           body: jsonEncode({
             "post-content": post_content,
@@ -50,23 +52,30 @@ class UploadFileService extends ChangeNotifier {
 
   getPosts({required String userToken}) async {
     try {
-      http.Response response = await http.post(
-        Uri.parse(
-            "https://note-sharing-application.onrender.com/user/api/post_details/"),
+      http.Response response = await http.get(
+        Uri.parse("https://note-sharing-application.onrender.com/post/"),
         headers: {
           'Content-Type': 'application/json',
           "Authorization": 'Bearer $userToken'
         },
       );
+      log("---  " + response.body.toString());
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
-
+        Map<String, dynamic> posts =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        allPosts = AllPostsModel.fromMap(posts);
+        log(allPosts!.data.toString());
+        notifyListeners();
       } else {
         toastMessage("Failed to load");
+        log("status code while getting post is not 200");
       }
     } catch (e) {
       toastMessage("Failed to load");
+      log("error to get posts---" + e.toString());
+      toastMessage(e.toString());
     }
   }
 }

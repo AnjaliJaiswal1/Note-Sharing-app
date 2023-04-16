@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
+import 'package:note_sharing_app/Screens/Register/user_login.dart';
 import 'package:note_sharing_app/Screens/settings/settings.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/main.dart';
@@ -183,7 +184,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     CustomElevatedButton(
                         child: Text("Logout", style: GoogleFonts.poppins()),
-                        onPressed: () {})
+                        onPressed: () {
+                          Get.offAll(UserLoginPage());
+                        })
                   ],
                 ),
               ),

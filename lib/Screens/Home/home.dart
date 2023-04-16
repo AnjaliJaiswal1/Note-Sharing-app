@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_sharing_app/Hive/user_profile.dart';
+import 'package:note_sharing_app/Screens/Home/posts_screen.dart';
 import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
@@ -46,19 +47,12 @@ class _HomeState extends State<Home> {
                   elevation: 0,
                   leading: GestureDetector(
                     onTap: () {
-                      // log(profileData.toString());
-                      // log(box.get(userProfileKey).toString());
-                      // log(boxdetails.get(userProfileKey).toString());
-                      // // Get.offAll(UserLoginPage());
                       Get.to(() => ProfileScreen(
                             userData: widget.userData!,
-                            // userProfileData: boxdetails.get(userProfileKey),
                           ));
                     },
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
-                      // foregroundImage:
-                      //     NetworkImage(profileData!.profile_image!)
                       foregroundImage: AssetImage('assets/images/anjali.png'),
                     ),
                   ),
@@ -543,14 +537,32 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
+                                onPressed: () {
+                                  Get.to(PostsPage());
+                                },
+                                icon: const Icon(
+                                  Icons.dashboard,
+                                  size: 24,
+                                  color: primaryColor1,
+                                )),
+                            const Text(
+                              "Posts",
+                              style: TextStyle(color: primaryColor1),
+                            )
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
                                 onPressed: () async {
-                                  log("------------");
                                   XFile? file =
                                       await UploadFileService().pickImage();
-                                  log(file!.name.toString());
-                                  Get.to(UploadPost(
-                                    file: File(file.path),
-                                  ));
+                                  if (file != null) {
+                                    Get.to(UploadPost(
+                                      file: File(file.path),
+                                    ));
+                                  }
                                 },
                                 icon: const Icon(
                                   Icons.upload_file_rounded,
