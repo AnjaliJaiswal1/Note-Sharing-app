@@ -79,7 +79,10 @@ class _HomeState extends State<Home> {
                           )
                         : TextButton(
                             onPressed: () =>
-                                Get.to(() => const ProfileScreen()),
+                                Get.to(() =>  ProfileScreen(
+                          userData: widget.userData!,
+                          userProfileData: boxdetails.get(userProfileKey),
+                        )),
                             child: Text(
                               "Complete your profile",
                               style: GoogleFonts.poppins(
