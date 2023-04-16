@@ -118,17 +118,13 @@ class LoginService extends ChangeNotifier {
 
       Map<String, dynamic> data =
           jsonDecode(loginResponse.body) as Map<String, dynamic>;
-      // log(data.toString());
       if (data.containsKey("id")) {
-        // log("user data exists");
         userData = UserDataHive.fromMap(data);
         box.put(userDataKey, userData!);
         notifyListeners();
       } else {
-        // log("user dadta is null");
         userData = null;
       }
-      // log(loginResponse.body.toString());
     } catch (e) {
       Fluttertoast.showToast(msg: "$e");
       log(e.toString());
