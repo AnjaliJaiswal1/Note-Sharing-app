@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -11,7 +9,6 @@ import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'Screens/Home/home.dart';
 
 late Box box;
@@ -49,9 +46,11 @@ class MyApp extends StatelessWidget {
       home: ValueListenableBuilder<Box>(
           valueListenable: box.listenable(),
           builder: (context, userbox, _) {
-            log("abc bckajdfla dfljkadlfsak;ldfj");
             UserDataHive? temp = userbox.get(userDataKey);
             UserProfileDataHive? profile = userbox.get(userProfileKey);
+            // log("profile data----$profile");
+            // log("user data----$temp");
+            // // return UserLoginPage();
             return temp != null && profile != null
                 ? Home(
                     userData: temp,

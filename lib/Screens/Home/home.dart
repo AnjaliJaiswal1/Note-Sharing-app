@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                       // // Get.offAll(UserLoginPage());
                       Get.to(() => ProfileScreen(
                             userData: widget.userData!,
-                            userProfileData: boxdetails.get(userProfileKey),
+                            // userProfileData: boxdetails.get(userProfileKey),
                           ));
                     },
                     child: CircleAvatar(

@@ -161,7 +161,8 @@ class LoginService extends ChangeNotifier {
           }));
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      if (data.containsKey("id")) {
+      data = data["data"];
+      if (data.containsKey("id") || data.containsKey("user")) {
         userProfile = UserProfileDataHive.fromMap(data);
         box.put(userProfileKey, userProfile!);
         log("-----------------++-----------${box.get(userProfileKey)}");
@@ -185,14 +186,15 @@ class LoginService extends ChangeNotifier {
         },
       );
       Map data = jsonDecode(response.body) as Map;
-      if (data.containsKey("id")) {
+      data = data["data"];
+      if (data.containsKey("id") || data.containsKey("user")) {
         userProfile = UserProfileDataHive.fromMap(data as Map<String, dynamic>);
         box.put(userProfileKey, userProfile);
         notifyListeners();
         log("${box.get(userProfileKey)} __________________________");
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(msg: "Wrong Credentials");
     }
   }
 }
