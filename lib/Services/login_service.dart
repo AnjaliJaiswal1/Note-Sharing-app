@@ -11,11 +11,12 @@ import 'package:note_sharing_app/models/login_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:note_sharing_app/models/profile_model.dart';
 
+import '../Hive/token/token.dart';
 import '../Hive/user_profile.dart';
 // import 'package:xfile/xfile.dart';
 
 class LoginService extends ChangeNotifier {
-  CreateUserResponse? userResponseToken;
+  TokenModel? userResponseToken;
   bool? isUserAlreadyExist = false;
   bool? isuserEmailAlreadyExist = false;
   bool isLoggedIn = false;
@@ -50,9 +51,9 @@ class LoginService extends ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
       if (data.containsKey("access") || data.containsKey("refresh")) {
-        userResponseToken = CreateUserResponse.fromMap(data);
-        notifyListeners();
-        userToken = userResponseToken!.access;
+        userResponseToken = TokenModel.fromMap(data);
+        box.put(tokenHiveKey, userResponseToken);
+        userToken = userResponseToken!.accessToken;
         notifyListeners();
       } else if (data.containsKey("username")) {
         isUserAlreadyExist = true;
@@ -81,10 +82,11 @@ class LoginService extends ChangeNotifier {
       log(loginResponse.body.toString());
 
       if (data.containsKey("refresh") || data.containsKey("access")) {
-        userResponseToken = CreateUserResponse.fromMap(data);
+        userResponseToken = TokenModel.fromMap(data);
+        box.put(tokenHiveKey, userResponseToken);
         isLoggedIn = true;
         notifyListeners();
-        userToken = userResponseToken!.access;
+        userToken = userResponseToken!.accessToken;
         notifyListeners();
         // log(userResponseToken.toString());
       } else if (data.containsKey("message") &&

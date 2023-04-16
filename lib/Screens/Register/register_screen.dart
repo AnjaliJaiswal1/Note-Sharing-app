@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Hive/token/token.dart';
 import 'package:note_sharing_app/Screens/Profile/create_profile.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
@@ -28,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  CreateUserResponse? userData;
+  TokenModel? userData;
   bool? userNameAlreadyExist = false;
   bool? useremailAlreadyExist = false;
   bool isButtonPressed = false;

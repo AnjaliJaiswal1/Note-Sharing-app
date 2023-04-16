@@ -1,16 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class CreateUserResponse {
-  String? access;
-  String? refresh;
-  CreateUserResponse({required this.access, required this.refresh});
+// class CreateUserResponse {
+//   String? access;
+//   String? refresh;
+//   CreateUserResponse({required this.access, required this.refresh});
 
-  CreateUserResponse.fromMap(Map<String, dynamic> map) {
-    access = map["access"];
-    refresh = map["refresh"];
-  }
-}
+//   CreateUserResponse.fromMap(Map<String, dynamic> map) {
+//     access = map["access"];
+//     refresh = map["refresh"];
+//   }
+// }
 
 class UserData {
   int? id;
@@ -68,4 +68,3 @@ class UserData {
     );
   }
 }
-
