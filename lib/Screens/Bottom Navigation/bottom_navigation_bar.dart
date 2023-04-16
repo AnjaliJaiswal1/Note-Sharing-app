@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Screens/QnA%20Forum/qna_forum.dart';
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 import '../Explore/explore.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
-  const CustomBottomNavBar({super.key});
+  UserDataHive? userData;
+  CustomBottomNavBar({super.key, this.userData});
 
   @override
   State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
@@ -26,9 +28,11 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
-        children: const [
-          Home(),
-          Explore(),
+        children:  [
+          Home(
+            userData: widget.userData,
+          ),
+          Explore(userData: widget.userData,),
           QnA_Forum(),
           Chat(),
         ],
@@ -39,7 +43,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFFFFFFFF).withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             width: 1,

@@ -55,83 +55,35 @@ class _QnA_ForumState extends State<QnA_Forum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            // Get.to(() => ProfileScreen(
-            //       userData: widget.userData!,
-            //       userProfileData: boxdetails.get(userProfileKey),
-            //     ));
-          },
-          child: const CircleAvatar(
-            backgroundColor: Colors.white,
-            // foregroundImage:
-            //     NetworkImage(profileData!.profile_image!)
-            foregroundImage: AssetImage('assets/images/anjali.png'),
-          ),
-        ),
-        leadingWidth: 80,
-        titleSpacing: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            TextButton(
-                onPressed: () => Get.to(() => const ProfileScreen()),
-                child: Text(
-                  "Complete your profile",
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: textColorBlack,
-                  ),
-                )),
-            // const SizedBox(height: 2.5),
-            Text(
-              "Welcome back!",
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: textColorBlack.withOpacity(0.6),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            splashRadius: 24,
-            splashColor: primaryColor3,
-            icon: const Icon(
-              CupertinoIcons.bell_fill,
-              color: primaryColor1,
-              size: 24,
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(
           width: Get.width,
           padding: const EdgeInsets.all(16),
           child: qnaModel != null
-              ? ListView.builder(
+              ? ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: qnaModel!.data!.length,
                   itemBuilder: (context, index) {
+                    log(qnaModel!.data![index].user.toString());
                     return QnAPost(index: index);
                   },
+                  separatorBuilder: (context, index) => Container(
+                    height: 6,
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      color: primaryColor3.withOpacity(0.25),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                 )
               : const SizedBox(
-                height: 50,
-                width: 50,
-                child: CircularProgressIndicator(color: primaryColor1),
-              ),
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(color: primaryColor1),
+                ),
         ),
       ),
     );
@@ -293,15 +245,6 @@ class QnAPost extends StatelessWidget {
                 ),
               )
             ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            height: 6,
-            width: Get.width,
-            decoration: BoxDecoration(
-              color: primaryColor3.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(4),
-            ),
           ),
           const SizedBox(height: 12),
         ],
