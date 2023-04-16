@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,62 +31,122 @@ class ArrowBackButton extends StatelessWidget {
   }
 }
 
-class ProfileButton extends StatelessWidget {
-  final Function()? onTap;
-  final String title;
-  final IconData icons;
-  const ProfileButton({
+class MyTextFormField extends StatelessWidget {
+  final Widget? prefixIcon;
+  final int? maxLength;
+  final bool readOnly;
+  final int? maxlines;
+  final bool ownValidator;
+  final bool numValidator;
+  final bool requiredValidator;
+  final bool emailValidator;
+  final bool mobileNumberValidator;
+  final bool obscureText;
+  final String? hintText;
+  final Widget? suffixIcon;
+  final FormFieldValidator<String>? validator;
+  final TextEditingController controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  MyTextFormField({
     super.key,
-    required this.onTap,
-    required this.title,
-    required this.icons,
+    this.validator,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.numValidator = false,
+    this.inputFormatters,
+    this.keyboardType,
+    this.prefixIcon,
+    this.maxLength,
+    this.readOnly = false,
+    this.maxlines,
+    this.ownValidator = false,
+    this.emailValidator = false,
+    this.mobileNumberValidator = false,
+    this.requiredValidator = true,
+    this.hintText = "",
+    required this.controller,
+// class ProfileButton extends StatelessWidget {
+//   final Function()? onTap;
+//   final String title;
+//   final IconData icons;
+//   const ProfileButton({
+//     super.key,
+//     required this.onTap,
+//     required this.title,
+//     required this.icons,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: Get.width,
-        height: Get.height * 0.06,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            Container(
-              height: 32,
-              width: 32,
-              decoration: BoxDecoration(
-                color: primaryColor3,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Icon(
-                icons,
-                size: 20,
-                color: primaryColor1,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: textColorBlack,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: primaryColor3,
-            ),
-          ],
-        ),
-      ),
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
+          hintText: hintText,
+          counterText: "",
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: primaryColor3)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: primaryColor3, width: 1)),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: primaryColor3, width: 1),
+              borderRadius: const BorderRadius.all(Radius.circular(12))),
+          isDense: true),
+      readOnly: readOnly,
+      obscureText: obscureText,
+      maxLines: maxlines,
+      
+      textInputAction: TextInputAction.next,
+      validator: ownValidator
+          ? validator
+          : (value) {
+              if (numValidator && !value!.isNumericOnly) {
+                // focusNode.requestFocus();
+                return "Must be Number";
+              }
+              if (requiredValidator && value!.isEmpty) {
+                // focusNode.requestFocus();
+                return "Required";
+              }
+              if (emailValidator && (!value!.isEmail)) {
+                // focusNode.requestFocus();
+                return "Must be Email";
+              }
+              if (mobileNumberValidator && ((value!.length != 12))) {
+                // focusNode.requestFocus();
+                return "Must be 10 digits Number";
+              }
+
+              return null;
+            },
+      maxLength: maxLength,
+      keyboardType: keyboardType,
+      inputFormatters: const [],
     );
   }
 }
 
+class CustomElevatedButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback? onPressed;
+  const CustomElevatedButton(
+      {super.key, required this.child, required this.onPressed});
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: child,
+      style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          minimumSize: Size(Get.width - 100, 50),
+          backgroundColor: primaryColor2),
+    );
+  }
+}
 class LargeButton extends StatefulWidget {
   final Function()? onPressed;
   final String buttonName;

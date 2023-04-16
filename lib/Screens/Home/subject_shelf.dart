@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/constants.dart';
 
-import '../shared.dart';
+import '../../shared.dart';
 
 class SubjectShelf extends StatefulWidget {
   const SubjectShelf({super.key});

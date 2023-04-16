@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-Color primaryColor1 = const Color(0xFF5A56BF);
-Color primaryColor2 = const Color(0xFF817ECE);
-Color primaryColor3 = const Color(0xFFBBBAD9);
+double height = Get.height;
+double width = Get.width;
+double height10 = Get.height / 39.2;
+double width10 = Get.width / 82.5;
+const String userDataKey = "USERLOGINDATA";
+const String userProfileKey = "USERPROFILEDATA";
+const String tokenHiveKey = "TOKENS";
+
+String girlAvatar =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1tZt2GTv3xusdfAEeIuJj-Po7TUIxUEaTzw&usqp=CAU";
+
+const Color primaryColor1 = Color(0xFF5A56BF);
+const Color primaryColor2 = Color(0xFF817ECE);
+const Color primaryColor3 = Color(0xFFBBBAD9);
 
 Color secondaryColor1 = const Color(0xFFF27052);
 Color secondaryColor2 = const Color(0xFFFF9076);
@@ -58,7 +70,7 @@ List<String> recentViewImage = [
   'assets/images/engineering_drawing.jpg',
 ];
 
-List<String> recentViewTitlw= [
+List<String> recentViewTitlw = [
   'Circuit Design',
   'Django',
   'Engineering Drawing',

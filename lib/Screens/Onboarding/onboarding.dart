@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Screens/Register/phone_login.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/shared.dart';
+
+import '../Register/user_login.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -92,13 +95,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 LargeButton(
                   onPressed: () {
-                    setState(() {
-                      pageController.animateTo(
-                        Get.width * 0.9 * (pageIndex + 1),
-                        duration: const Duration(milliseconds: 350),
-                        curve: Curves.ease,
-                      );
-                    });
+                    if (pageIndex == 2) {
+                      Get.offAll(UserLoginPage());
+                    } else {
+                      setState(() {
+                        pageController.animateTo(
+                          Get.width * 0.9 * (pageIndex + 1),
+                          duration: const Duration(milliseconds: 350),
+                          curve: Curves.ease,
+                        );
+                      });
+                    }
                   },
                   buttonName: pageIndex == 2 ? "Let's get Started!" : "Next",
                 ),

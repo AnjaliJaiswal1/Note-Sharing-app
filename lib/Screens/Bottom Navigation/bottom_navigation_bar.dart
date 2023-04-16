@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:note_sharing_app/Chat/chat.dart';
-import 'package:note_sharing_app/Explore/explore.dart';
-import 'package:note_sharing_app/Home/home.dart';
+import 'package:note_sharing_app/Screens/Chat/chat.dart';
+import 'package:note_sharing_app/Screens/Home/home.dart';
+import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/Upload/upload.dart';
 import 'package:note_sharing_app/constants.dart';
+import 'package:provider/provider.dart';
+
+import '../Explore/explore.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
@@ -22,11 +25,11 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
-        children: const [
-          Home(),
-          Explore(),
-          Upload(),
-          Chat(),
+        children: [
+          Home(userData: Provider.of<LoginService>(context).userData!),
+          const Explore(),
+          const Upload(),
+          const Chat(),
         ],
       ),
       bottomNavigationBar: Container(
