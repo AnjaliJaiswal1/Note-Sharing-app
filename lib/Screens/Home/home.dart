@@ -1,14 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:note_sharing_app/Hive/user_profile.dart';
 import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
+import 'package:note_sharing_app/Screens/upload/upload_post.dart';
 import 'package:note_sharing_app/Services/upload_service.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/main.dart';
@@ -36,7 +39,7 @@ class _HomeState extends State<Home> {
             valueListenable: box.listenable(),
             builder: (context, boxdetails, _) {
               profileData = box.get(userProfileKey);
-              log(box.get(userProfileKey).toString());
+
               return Scaffold(
                 appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -524,7 +527,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () async {},
                                 icon: const Icon(
                                   Icons.home,
                                   size: 24,
@@ -540,7 +543,15 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  log("------------");
+                                  XFile? file =
+                                      await UploadFileService().pickImage();
+                                  log(file!.name.toString());
+                                  Get.to(UploadPost(
+                                    file: File(file.path),
+                                  ));
+                                },
                                 icon: const Icon(
                                   Icons.upload_file_rounded,
                                   size: 24,
@@ -556,10 +567,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                onPressed: () async {
-                                  var path =
-                                      await UploadFileService().uploadFile();
-                                },
+                                onPressed: () async {},
                                 icon: const Icon(
                                   Icons.chat,
                                   size: 24,

@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
-import 'package:note_sharing_app/Upload/upload.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +27,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         children: [
           Home(userData: Provider.of<LoginService>(context).userData!),
           const Explore(),
-          const Upload(),
+          const Explore(),
           const Chat(),
         ],
       ),
