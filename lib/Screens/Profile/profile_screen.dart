@@ -13,6 +13,11 @@ import 'package:note_sharing_app/shared.dart';
 import '../../Hive/user_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
+//  final UserDataHive? userData;
+//  final UserProfileDataHive? userProfileData;
+//  const ProfileScreen(
+//      {super.key, this.userProfileData, this.userData});
+
   final UserDataHive userData;
   const ProfileScreen({super.key, required this.userData});
 
@@ -42,6 +47,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: const ArrowBackButton(
                 iconColor: primaryColor1,
               ),
+
+//              SizedBox(
+//                height: 16,
+//                width: Get.width,
+//              ),
+//              Text(
+//                "${widget.userData!.first_name} ${widget.userData!.last_name!}",
+
               title: Text(
                 "Profile",
                 style: GoogleFonts.poppins(
@@ -187,9 +200,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+
+//              SizedBox(
+//                height: height10 * 2,
+//              ),
+//              CustomListTile(
+//                onTap: () {
+//                  Get.to(() => CreateProfileScreen(
+//                        profileData: widget.userProfileData,
+//                        isNew: false,
+//                        userData: widget.userData!,
+//                      ));
+//                },
+//                leadingIcon: Icons.person,
+//                title: "Profile Details",
+//              ),
+//              SizedBox(
+//                height: height10,
+//              ),
+//              CustomListTile(
+//                onTap: () {},
+//                leadingIcon: Icons.upload_file_rounded,
+//                title: "Uploaded Files",
+//              ),
+//              SizedBox(
+//                height: height10,
+//              ),
+//              CustomListTile(
+//                onTap: () {},
+//                leadingIcon: Icons.favorite,
+//                title: "Saved Files",
+//              ),
+//              SizedBox(
+//                height: height10,
+//              ),
+//              CustomListTile(
+//                onTap: () {
+//                  Get.to(() => const SettingScreen());
+//                },
+//                leadingIcon: Icons.settings,
+//                title: "Settings",
+//              ),
+//              SizedBox(
+//                height: height10 * 2,
+//              ),
+//              CustomElevatedButton(
+//                  child: Text("Logout", style: GoogleFonts.poppins()),
+//                  onPressed: () {})
+//            ],
+//          ),
+//        ),
+//      ),
+//    );
+
             ),
           );
         });
+
   }
 }
 
