@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     return Material(
       child: Container(
         margin: const EdgeInsets.only(
-          top: 24,
+          top: 32,
         ),
         child: ValueListenableBuilder<Box>(
             valueListenable: box.listenable(),

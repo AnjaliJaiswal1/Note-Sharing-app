@@ -1,15 +1,18 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Hive/token/token.dart';
 import 'package:note_sharing_app/Hive/user_profile.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
-import 'package:provider/provider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'Screens/Home/home.dart';
 
 late Box box;

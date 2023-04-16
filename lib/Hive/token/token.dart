@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 part 'token.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class TokenModel extends HiveObject {
   @HiveField(0)
   String? refreshToken;

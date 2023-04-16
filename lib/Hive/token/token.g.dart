@@ -8,7 +8,7 @@ part of 'token.dart';
 
 class TokenModelAdapter extends TypeAdapter<TokenModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
   TokenModel read(BinaryReader reader) {
