@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:note_sharing_app/Services/upload_service.dart';
+
 import 'package:note_sharing_app/Screens/Bottom%20Navigation/bottom_navigation_bar.dart';
+
 import 'package:provider/provider.dart';
 
 import 'package:note_sharing_app/Hive/logged_in.dart';
@@ -15,6 +19,7 @@ import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
 
 import 'Screens/Home/home.dart';
+import 'Screens/Home/posts_screen.dart';
 
 late Box box;
 Future<void> main() async {
@@ -33,6 +38,8 @@ Future<void> main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<LoginService>(create: (_) => LoginService()),
+      ChangeNotifierProvider<UploadFileService>(
+          create: (_) => UploadFileService()),
     ],
     child: const MyApp(),
   ));
@@ -56,7 +63,7 @@ class MyApp extends StatelessWidget {
             UserProfileDataHive? profile = userbox.get(userProfileKey);
             // log("profile data----$profile");
             // log("user data----$temp");
-            // // return UserLoginPage();
+            // return UserLoginPage();
             return temp != null && profile != null
                 ? CustomBottomNavBar(
                   userData: temp,

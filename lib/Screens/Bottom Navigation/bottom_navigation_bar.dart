@@ -6,7 +6,6 @@ import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
 import 'package:note_sharing_app/Screens/QnA%20Forum/qna_forum.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
-import 'package:note_sharing_app/Upload/upload.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +27,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
+
         children:  [
           Home(
             userData: widget.userData,
@@ -35,6 +35,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
           Explore(userData: widget.userData,),
           QnA_Forum(),
           Chat(),
+
         ],
       ),
       bottomNavigationBar: Container(

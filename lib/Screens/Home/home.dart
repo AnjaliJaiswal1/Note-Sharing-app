@@ -1,15 +1,22 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:note_sharing_app/Hive/user_profile.dart';
+
+import 'package:note_sharing_app/Screens/Home/posts_screen.dart';
+
 import 'package:note_sharing_app/Screens/Bottom%20Navigation/bottom_navigation_bar.dart';
+
 import 'package:note_sharing_app/Screens/Home/subject_shelf.dart';
 import 'package:note_sharing_app/Screens/Profile/profile_screen.dart';
 import 'package:note_sharing_app/Screens/Register/user_login.dart';
+import 'package:note_sharing_app/Screens/upload/upload_post.dart';
 import 'package:note_sharing_app/Services/upload_service.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:note_sharing_app/main.dart';
@@ -37,6 +44,7 @@ class _HomeState extends State<Home> {
           top: 32,
         ),
         child: ValueListenableBuilder<Box>(
+
           valueListenable: box.listenable(),
           builder: (context, boxdetails, _) {
             profileData = box.get(userProfileKey);
@@ -138,6 +146,7 @@ class _HomeState extends State<Home> {
 //                      // foregroundImage:
 //                      //     NetworkImage(profileData!.profile_image!)
 //                      foregroundImage: AssetImage('assets/images/anjali.png'),
+
                     ),
                   ),
                 ],
@@ -556,10 +565,12 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
+
               ),
             );
           },
         ),
+
       ),
     );
   }
