@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Hive/token/token.dart';
+import 'package:note_sharing_app/Screens/Home/comment_screen.dart';
 import 'package:note_sharing_app/main.dart';
 import 'package:note_sharing_app/shared.dart';
 import '../../Hive/logged_in.dart';
@@ -16,7 +17,6 @@ import 'package:http/http.dart' as http;
 import '../Profile/profile_screen.dart';
 
 class PostsPage extends StatefulWidget {
-  
   final UserDataHive? userData;
   final UserProfileDataHive? userProfileDetail;
   const PostsPage({super.key, this.userData, this.userProfileDetail});
@@ -28,6 +28,7 @@ class PostsPage extends StatefulWidget {
 AllPostsModel? allPosts;
 
 class _PostsPageState extends State<PostsPage> {
+  TokenModel userToken = box.get(tokenHiveKey);
   UserProfileDataHive? profileData;
   Future<AllPostsModel?> getPosts({required String userToken}) async {
     try {
@@ -35,7 +36,7 @@ class _PostsPageState extends State<PostsPage> {
         Uri.parse("https://note-sharing-application.onrender.com/post/"),
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": 'Bearer $userToken'
+          'Authorization': 'Bearer $userToken'
         },
       );
       log("---  " + response.body.toString());
@@ -59,9 +60,7 @@ class _PostsPageState extends State<PostsPage> {
   }
 
   assignValue() async {
-    TokenModel a = box.get(tokenHiveKey);
-
-    allPosts = await getPosts(userToken: a.accessToken!);
+    allPosts = await getPosts(userToken: userToken.accessToken!);
   }
 
   @override
@@ -75,77 +74,76 @@ class _PostsPageState extends State<PostsPage> {
   Widget build(BuildContext context) {
     profileData = box.get(userProfileKey);
     return Scaffold(
-        appBar: AppBar(
-                backgroundColor: Colors.white,
-                elevation: 0,
-                leading: GestureDetector(
-                  onTap: () {
-                    // log(profileData.toString());
-                    // log(box.get(userProfileKey).toString());
-                    // log(boxdetails.get(userProfileKey).toString());
-                    // // Get.offAll(UserLoginPage());
-                    Get.to(() => ProfileScreen(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            // log(profileData.toString());
+            // log(box.get(userProfileKey).toString());
+            // log(boxdetails.get(userProfileKey).toString());
+            // // Get.offAll(UserLoginPage());
+            Get.to(() => ProfileScreen(
+                  userData: widget.userData!,
+                  userProfileData: profileData,
+                ));
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            foregroundImage: NetworkImage(
+                'https://note-sharing-application.onrender.com${profileData!.profile_image}'),
+          ),
+        ),
+        leadingWidth: 80,
+        titleSpacing: 0,
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            widget.userData != null
+                ? Text(
+                    "Hi ${widget.userData!.first_name} ",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: textColorBlack,
+                    ),
+                  )
+                : TextButton(
+                    onPressed: () => Get.to(() => ProfileScreen(
                           userData: widget.userData!,
                           userProfileData: profileData,
-                        ));
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    foregroundImage: NetworkImage(
-                        'https://note-sharing-application.onrender.com${profileData!.profile_image}'),
-                  ),
-                ),
-                leadingWidth: 80,
-                titleSpacing: 0,
-                centerTitle: false,
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    widget.userData != null
-                        ? Text(
-                            "Hi ${widget.userData!.first_name} ",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: textColorBlack,
-                            ),
-                          )
-                        : TextButton(
-                            onPressed: () => Get.to(() => ProfileScreen(
-                                  userData: widget.userData!,
-                                  userProfileData:
-                                      profileData,
-                                )),
-                            child: Text(
-                              "Complete your profile",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: textColorBlack,
-                              ),
-                            )),
-                    // const SizedBox(height: 2.5),
-                    Text(
-                      "Welcome back!",
+                        )),
+                    child: Text(
+                      "Complete your profile",
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: textColorBlack.withOpacity(0.6),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: textColorBlack,
                       ),
-                    ),
-                  ],
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {},
-                    splashRadius: 24,
-                    splashColor: primaryColor3,
-                    icon: const Icon(
-                      CupertinoIcons.bell_fill,
-                      color: primaryColor1,
-                      size: 24,
+                    )),
+            // const SizedBox(height: 2.5),
+            Text(
+              "Welcome back!",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: textColorBlack.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            splashRadius: 24,
+            splashColor: primaryColor3,
+            icon: const Icon(
+              CupertinoIcons.bell_fill,
+              color: primaryColor1,
+              size: 24,
 
 //            valueListenable: box.listenable(),
 //            builder: (context, boxdetails, _) {
@@ -171,44 +169,124 @@ class _PostsPageState extends State<PostsPage> {
 //                      // foregroundImage:
 //                      //     NetworkImage(profileData!.profile_image!)
 //                      foregroundImage: AssetImage('assets/images/anjali.png'),
-                    ),
-                  ),
-                ],
-              ),
-              body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            height: Get.height - 80,
-            width: Get.width,
-            padding: const EdgeInsets.all(16),
-            child: allPosts != null
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: allPosts!.data!.length,
-                    itemBuilder: (context, index) {
-                      return Posts(index: index);
-                    },
-                  )
-                : Center(
-                    child: CircularProgressIndicator.adaptive(
-                    valueColor: AlwaysStoppedAnimation(primaryColor1),
-                  )),
+            ),
           ),
-        ));
+        ],
+      ),
+      body: Container(
+        height: Get.height - 80,
+        width: Get.width,
+        padding: const EdgeInsets.all(16),
+        child: allPosts != null
+            ? ListView.separated(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: allPosts!.data!.length,
+                itemBuilder: (context, index) {
+                  return Posts(
+                    index: index,
+                    userAccessToken: userToken.accessToken!,
+                    user_id: widget.userData!.id!,
+                  );
+                },
+                separatorBuilder: (context, index) => Container(
+                  height: 6,
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    color: primaryColor3.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              )
+            : Center(
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation(primaryColor1),
+                ),
+              ),
+      ),
+    );
   }
 }
 
-class Posts extends StatelessWidget {
+class Posts extends StatefulWidget {
+  String userAccessToken;
+  int user_id;
   int index;
   Posts({
     super.key,
+    required this.user_id,
     required this.index,
+    required this.userAccessToken,
   });
 
   @override
+  State<Posts> createState() => _PostsState();
+}
+
+class _PostsState extends State<Posts> {
+  int likeCount = 0;
+  bool liked = false;
+
+  Future postLike() async {
+    http.Response likePostResponse = await http.post(
+      Uri.parse(
+          "https://note-sharing-application.onrender.com/post/post=${allPosts!.data![widget.index].post_id}/like/"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.userAccessToken}'
+      },
+    );
+    log('post like : ' + likePostResponse.statusCode.toString());
+    return likePostResponse;
+  }
+
+  Future deleteLike() async {
+    http.Response deleteLikePostResponse = await http.delete(
+      Uri.parse(
+          "https://note-sharing-application.onrender.com/post/post=${allPosts!.data![widget.index].post_id}/like/"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.userAccessToken}'
+      },
+    );
+    log('delete like : ' + deleteLikePostResponse.statusCode.toString());
+    return deleteLikePostResponse;
+  }
+
+  Future getPostLike() async {
+    try {
+      http.Response like = await http.get(
+        Uri.parse(
+            "https://note-sharing-application.onrender.com/post/post=${allPosts!.data![widget.index].post_id}/like"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${widget.userAccessToken}'
+        },
+      );
+      if (like.statusCode == 200 && like.body.isNotEmpty) {
+        Map<String, dynamic> likeMap =
+            jsonDecode(like.body) as Map<String, dynamic>;
+        setState(
+          () {
+            likeCount = likeMap['like_count'];
+          },
+        );
+      } else {
+        log('Something went wrong. Status code = ${like.statusCode}');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    getPostLike();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // return Consumer<UploadFileService>(builder: (context, uploadService, _) {
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -269,7 +347,7 @@ class Posts extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            allPosts!.data![index].post_content!,
+            allPosts!.data![widget.index].post_content!,
             style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -277,10 +355,11 @@ class Posts extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          allPosts!.data![index].post_image != null
+          allPosts!.data![widget.index].post_image != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset("assets/images/book.jpg"),
+                  child: Image.network(
+                      "https://note-sharing-application.onrender.com${allPosts!.data![widget.index].post_image}"),
                 )
               : const SizedBox(
                   height: 0,
@@ -291,7 +370,13 @@ class Posts extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  setState(() {
+                    liked = !liked;
+                  });
+                  liked ? postLike() : deleteLike();
+                  getPostLike();
+                },
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -307,7 +392,7 @@ class Posts extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "0 likes",
+                        "$likeCount likes",
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           color: primaryColor1,
@@ -318,7 +403,13 @@ class Posts extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    Get.to(
+                      () => CommentScreen(),
+                    );
+                  });
+                },
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -355,15 +446,6 @@ class Posts extends StatelessWidget {
                 ),
               )
             ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            height: 6,
-            width: Get.width,
-            decoration: BoxDecoration(
-              color: primaryColor3.withOpacity(0.25),
-              borderRadius: BorderRadius.circular(4),
-            ),
           ),
           const SizedBox(height: 12),
         ],

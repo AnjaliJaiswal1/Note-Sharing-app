@@ -33,8 +33,7 @@ class _QnA_ForumState extends State<QnA_Forum> {
         Uri.parse("https://note-sharing-application.onrender.com/qna/"),
         headers: {
           "Content-Type": "application/json",
-          "Authorization":
-              "Bearer ${userToken.accessToken}"
+          "Authorization": "Bearer ${userToken.accessToken}"
         },
       );
       if (qnaPosts.statusCode == 200 && qnaPosts.body.isNotEmpty) {
@@ -82,10 +81,10 @@ class _QnA_ForumState extends State<QnA_Forum> {
                     ),
                   ),
                 )
-              : const SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(color: primaryColor1),
+              : Center(
+                  child: CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation(primaryColor1),
+                  ),
                 ),
         ),
       ),
