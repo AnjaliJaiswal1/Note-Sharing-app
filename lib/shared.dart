@@ -89,19 +89,39 @@ class MyTextFormField extends StatelessWidget {
           hintText: hintText,
           counterText: "",
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: primaryColor3)),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: primaryColor1,
+              width: 2,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: primaryColor3, width: 1)),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: primaryColor3,
+              width: 1,
+            ),
+          ),
           border: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor3, width: 1),
-              borderRadius: const BorderRadius.all(Radius.circular(12))),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: primaryColor3,
+              width: 1,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:  BorderSide(color: secondaryColor1, width: 1.5),
+          ),
+          
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:  BorderSide(color: secondaryColor1, width: 2),
+          ),
           isDense: true),
       readOnly: readOnly,
       obscureText: obscureText,
       maxLines: maxlines,
-      
       textInputAction: TextInputAction.next,
       validator: ownValidator
           ? validator
@@ -143,12 +163,14 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       child: child,
       style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          minimumSize: Size(Get.width - 100, 50),
-          backgroundColor: primaryColor2),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        minimumSize: Size(Get.width, 50),
+        backgroundColor: primaryColor1,
+      ),
     );
   }
 }
+
 class LargeButton extends StatefulWidget {
   final Function()? onPressed;
   final String buttonName;

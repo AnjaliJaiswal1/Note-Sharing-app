@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
+import 'package:note_sharing_app/Screens/QnA%20Forum/qna_forum.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +12,8 @@ import 'package:provider/provider.dart';
 import '../Explore/explore.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
-  const CustomBottomNavBar({super.key});
+  UserDataHive? userData;
+  CustomBottomNavBar({super.key, this.userData});
 
   @override
   State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
@@ -24,20 +27,24 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
-        children: [
-          Home(userData: Provider.of<LoginService>(context).userData!),
-          const Explore(),
-          const Explore(),
-          const Chat(),
+
+        children:  [
+          Home(
+            userData: widget.userData,
+          ),
+          Explore(userData: widget.userData,),
+          QnA_Forum(),
+          Chat(),
+
         ],
       ),
       bottomNavigationBar: Container(
-        height: Get.height * 0.08,
+        height: height10 * 3.5,
         width: Get.width * 0.9,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFFFFFFFF).withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             width: 1,
@@ -118,13 +125,13 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Icon(
-                      Icons.add_box,
+                      Icons.question_mark,
                       size: 28,
                       color:
                           bottomNavIndex == 2 ? primaryColor1 : primaryColor3,
                     ),
                     Text(
-                      "Upload",
+                      "QnA Forum",
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color:
