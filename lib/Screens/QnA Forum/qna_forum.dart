@@ -11,7 +11,9 @@ import 'package:note_sharing_app/Services/qna_service.dart';
 import 'package:note_sharing_app/models/Qna_model.dart';
 import 'package:http/http.dart' as http;
 
+import '../../Hive/token/token.dart';
 import '../../constants.dart';
+import '../../main.dart';
 import '../Profile/profile_screen.dart';
 
 class QnA_Forum extends StatefulWidget {
@@ -24,6 +26,7 @@ class QnA_Forum extends StatefulWidget {
 QnaModel? qnaModel;
 
 class _QnA_ForumState extends State<QnA_Forum> {
+  TokenModel userToken = box.get(tokenHiveKey);
   Future getQnAPosts() async {
     try {
       http.Response qnaPosts = await http.get(
@@ -31,7 +34,7 @@ class _QnA_ForumState extends State<QnA_Forum> {
         headers: {
           "Content-Type": "application/json",
           "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgxNjQ3NzI2LCJpYXQiOjE2ODE2NDQxMjYsImp0aSI6IjExMGM3MTVlZGUyMzRiZTY5ZjhlZjdiMzIxN2FjOWE4IiwiaWQiOjF9.LseS0U_brJg4suVkPF_iie7ZUmp5K8rLHceLqJY87-Y"
+              "Bearer ${userToken.accessToken}"
         },
       );
       if (qnaPosts.statusCode == 200 && qnaPosts.body.isNotEmpty) {

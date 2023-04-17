@@ -1,17 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Hive/token/token.dart';
 import 'package:note_sharing_app/main.dart';
 import 'package:note_sharing_app/shared.dart';
+import '../../Hive/logged_in.dart';
+import '../../Hive/user_profile.dart';
 import '../../constants.dart';
 import '../../models/posts_model.dart';
 import 'package:http/http.dart' as http;
 
+import '../Profile/profile_screen.dart';
+
 class PostsPage extends StatefulWidget {
-  const PostsPage({super.key});
+  
+  final UserDataHive? userData;
+  final UserProfileDataHive? userProfileDetail;
+  const PostsPage({super.key, this.userData, this.userProfileDetail});
 
   @override
   State<PostsPage> createState() => _PostsPageState();
@@ -20,6 +28,7 @@ class PostsPage extends StatefulWidget {
 AllPostsModel? allPosts;
 
 class _PostsPageState extends State<PostsPage> {
+  UserProfileDataHive? profileData;
   Future<AllPostsModel?> getPosts({required String userToken}) async {
     try {
       http.Response response = await http.get(
@@ -64,37 +73,109 @@ class _PostsPageState extends State<PostsPage> {
 
   @override
   Widget build(BuildContext context) {
+    profileData = box.get(userProfileKey);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: ArrowBackButton(
-            iconColor: primaryColor1,
-          ),
-          leadingWidth: 80,
-          titleSpacing: 0,
-          title: Text(
-            "Posts",
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              color: textColorBlack,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          // actions: [
-          //   IconButton(
-          //     onPressed: () {},
-          //     splashRadius: 24,
-          //     splashColor: primaryColor3,
-          //     icon: const Icon(
-          //       CupertinoIcons.bell_fill,
-          //       color: primaryColor1,
-          //       size: 24,
-          //     ),
-          //   ),
-          // ],
-        ),
-        body: SingleChildScrollView(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                leading: GestureDetector(
+                  onTap: () {
+                    // log(profileData.toString());
+                    // log(box.get(userProfileKey).toString());
+                    // log(boxdetails.get(userProfileKey).toString());
+                    // // Get.offAll(UserLoginPage());
+                    Get.to(() => ProfileScreen(
+                          userData: widget.userData!,
+                          userProfileData: profileData,
+                        ));
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    foregroundImage: NetworkImage(
+                        'https://note-sharing-application.onrender.com${profileData!.profile_image}'),
+                  ),
+                ),
+                leadingWidth: 80,
+                titleSpacing: 0,
+                centerTitle: false,
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    widget.userData != null
+                        ? Text(
+                            "Hi ${widget.userData!.first_name} ",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: textColorBlack,
+                            ),
+                          )
+                        : TextButton(
+                            onPressed: () => Get.to(() => ProfileScreen(
+                                  userData: widget.userData!,
+                                  userProfileData:
+                                      profileData,
+                                )),
+                            child: Text(
+                              "Complete your profile",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: textColorBlack,
+                              ),
+                            )),
+                    // const SizedBox(height: 2.5),
+                    Text(
+                      "Welcome back!",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: textColorBlack.withOpacity(0.6),
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 24,
+                    splashColor: primaryColor3,
+                    icon: const Icon(
+                      CupertinoIcons.bell_fill,
+                      color: primaryColor1,
+                      size: 24,
+
+//            valueListenable: box.listenable(),
+//            builder: (context, boxdetails, _) {
+//              profileData = box.get(userProfileKey);
+//              log(box.get(userProfileKey).toString());
+//              return Scaffold(
+//                appBar: AppBar(
+//                  backgroundColor: Colors.white,
+//                  elevation: 0,
+//                  leading: GestureDetector(
+//                    onTap: () {
+//                      // log(profileData.toString());
+//                      // log(box.get(userProfileKey).toString());
+//                      // log(boxdetails.get(userProfileKey).toString());
+//                      // // Get.offAll(UserLoginPage());
+//                      Get.to(() => ProfileScreen(
+//                            userData: widget.userData!,
+//                            // userProfileData: boxdetails.get(userProfileKey),
+//                          ));
+//                    },
+//                    child: CircleAvatar(
+//                      backgroundColor: Colors.white,
+//                      // foregroundImage:
+//                      //     NetworkImage(profileData!.profile_image!)
+//                      foregroundImage: AssetImage('assets/images/anjali.png'),
+                    ),
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
             height: Get.height - 80,

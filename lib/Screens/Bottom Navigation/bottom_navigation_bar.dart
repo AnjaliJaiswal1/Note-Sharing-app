@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_sharing_app/Hive/logged_in.dart';
 import 'package:note_sharing_app/Screens/Chat/chat.dart';
 import 'package:note_sharing_app/Screens/Home/home.dart';
+import 'package:note_sharing_app/Screens/Home/posts_screen.dart';
 import 'package:note_sharing_app/Screens/QnA%20Forum/qna_forum.dart';
 import 'package:note_sharing_app/Services/login_service.dart';
 import 'package:note_sharing_app/constants.dart';
@@ -27,15 +28,11 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: bottomNavIndex,
-
-        children:  [
-          Home(
-            userData: widget.userData,
-          ),
-          Explore(userData: widget.userData,),
+        children: [
+          PostsPage(userData: widget.userData),
+          Explore(userData: widget.userData),
           QnA_Forum(),
           Chat(),
-
         ],
       ),
       bottomNavigationBar: Container(
