@@ -76,19 +76,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       height: height10,
                     ),
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
+                    Container(
                           decoration: BoxDecoration(
-                              border: Border.all(color: primaryColor2),
                               borderRadius: BorderRadius.circular(12)),
                           height: Get.height * 0.125,
                           width: Get.height * 0.125,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              "assets/images/anjali.png",
+                            child: Image.network(
+                              "https://note-sharing-application.onrender.com${widget.userProfileData!.profile_image}",
                               // widget.userProfileData!.profile_image!,
                               height: Get.height * 0.125,
                               width: Get.height * 0.125,
@@ -98,29 +94,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Icons.error_outline,
                                 color: primaryColor2,
                               ),
-                              filterQuality: FilterQuality.high,
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                              color: primaryColor1,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
+                      SizedBox(
                       height: 16,
                       width: Get.width,
                     ),
@@ -157,6 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CustomListTile(
                       onTap: () {
                         Get.to(() => CreateProfileScreen(
+                          pageName: "Update Profile",
                               profileData: userProfileData,
                               isNew: false,
                               userData: widget.userData!,

@@ -17,7 +17,8 @@ import '../../Hive/logged_in.dart';
 
 class Home extends StatefulWidget {
   final UserDataHive? userData;
-  const Home({super.key, this.userData});
+  final UserProfileDataHive? userProfileDetail;
+  const Home({super.key, this.userData, this.userProfileDetail});
 
   @override
   State<Home> createState() => _HomeState();
@@ -29,12 +30,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.white,
       child: Container(
+        color: Colors.white,
         margin: const EdgeInsets.only(
           top: 32,
         ),
         child: ValueListenableBuilder<Box>(
-
           valueListenable: box.listenable(),
           builder: (context, boxdetails, _) {
             profileData = box.get(userProfileKey);
@@ -54,15 +56,15 @@ class _HomeState extends State<Home> {
                           userProfileData: boxdetails.get(userProfileKey),
                         ));
                   },
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    // foregroundImage:
-                    //     NetworkImage(profileData!.profile_image!)
-                    foregroundImage: AssetImage('assets/images/anjali.png'),
+                    foregroundImage: NetworkImage(
+                        'https://note-sharing-application.onrender.com${profileData!.profile_image}'),
                   ),
                 ),
                 leadingWidth: 80,
                 titleSpacing: 0,
+                centerTitle: false,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,11 +80,11 @@ class _HomeState extends State<Home> {
                             ),
                           )
                         : TextButton(
-                            onPressed: () =>
-                                Get.to(() =>  ProfileScreen(
-                          userData: widget.userData!,
-                          userProfileData: boxdetails.get(userProfileKey),
-                        )),
+                            onPressed: () => Get.to(() => ProfileScreen(
+                                  userData: widget.userData!,
+                                  userProfileData:
+                                      boxdetails.get(userProfileKey),
+                                )),
                             child: Text(
                               "Complete your profile",
                               style: GoogleFonts.poppins(
@@ -111,7 +113,7 @@ class _HomeState extends State<Home> {
                       CupertinoIcons.bell_fill,
                       color: primaryColor1,
                       size: 24,
-                      
+
 //            valueListenable: box.listenable(),
 //            builder: (context, boxdetails, _) {
 //              profileData = box.get(userProfileKey);
@@ -140,7 +142,6 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              
               backgroundColor: Colors.white,
               body: Padding(
                 padding: const EdgeInsets.only(right: 16, left: 16, top: 16),
@@ -556,122 +557,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              // bottomNavigationBar: 
-              // BottomAppBar(
-              //   child: Container(
-              //     height: height10 * 3.5,
-              //     padding: const EdgeInsets.all(8),
-              //     alignment: Alignment.center,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //       children: [
-              //         InkWell(
-              //           onTap: () {
-              //             setState(() {
-
-              //             });
-              //           },
-              //           child: SizedBox(
-              //             width: Get.width * 0.2,
-              //             child: Column(
-              //               mainAxisSize: MainAxisSize.max,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.home,
-              //                   size: 28,
-              //                   color: primaryColor1,
-              //                 ),
-              //                 Text(
-              //                   "Home",
-              //                   style: GoogleFonts.poppins(
-              //                     fontSize: 12,
-              //                     color: primaryColor1,
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         InkWell(
-              //           onTap: () {
-              //             setState(() {});
-              //           },
-              //           child: SizedBox(
-              //             width: Get.width * 0.2,
-              //             child: Column(
-              //               mainAxisSize: MainAxisSize.max,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.grid_view_rounded,
-              //                   size: 28,
-              //                   color: primaryColor3,
-              //                 ),
-              //                 Text(
-              //                   "Explore",
-              //                   style: GoogleFonts.poppins(
-              //                     fontSize: 12,
-              //                     color: primaryColor3,
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         InkWell(
-              //           onTap: () {
-              //             setState(() {});
-              //           },
-              //           child: SizedBox(
-              //             width: Get.width * 0.2,
-              //             child: Column(
-              //               mainAxisSize: MainAxisSize.max,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.add_box,
-              //                   size: 28,
-              //                   color: primaryColor3,
-              //                 ),
-              //                 Text(
-              //                   "Upload",
-              //                   style: GoogleFonts.poppins(
-              //                     fontSize: 12,
-              //                     color: primaryColor3,
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         InkWell(
-              //           onTap: () {
-              //             setState(() {});
-              //           },
-              //           child: SizedBox(
-              //             width: Get.width * 0.2,
-              //             child: Column(
-              //               mainAxisSize: MainAxisSize.max,
-              //               children: [
-              //                 const Icon(
-              //                   Icons.chat_rounded,
-              //                   size: 28,
-              //                   color: primaryColor3,
-              //                 ),
-              //                 Text(
-              //                   "chat",
-              //                   style: GoogleFonts.poppins(
-              //                     fontSize: 12,
-              //                     color: primaryColor3,
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-            
             );
           },
         ),

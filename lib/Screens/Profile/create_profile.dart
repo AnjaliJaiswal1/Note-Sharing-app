@@ -11,11 +11,13 @@ import '../../Hive/user_profile.dart';
 import '../../constants.dart';
 
 class CreateProfileScreen extends StatefulWidget {
+  final String pageName;
   final bool isNew;
   final UserDataHive userData;
   final UserProfileDataHive? profileData;
   const CreateProfileScreen(
       {super.key,
+      required this.pageName,
       required this.userData,
       required this.isNew,
       this.profileData});
@@ -67,7 +69,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           iconColor: primaryColor1,
         ),
         title: Text(
-          "Create Profile",
+          widget.pageName,
           style: GoogleFonts.poppins(
             fontSize: 16,
             color: textColorBlack,
@@ -78,7 +80,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       body: Consumer<LoginService>(
           builder: (context, LoginService loginService, _) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.all(32),
           child: Form(
             key: _createProfileScreen,
             child: SingleChildScrollView(
@@ -87,9 +89,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    SizedBox(
-                      height: height10 * 3,
-                    ),
                     Stack(
                       alignment: Alignment.bottomRight,
                       children: [
@@ -98,9 +97,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           child:
                               // profile != null
                               // ? const Icon(Icons.person)
-                              Image.asset(
+                              Image.network(
                             // File(profile!.path),
-                            "assets/images/anjali.png",
+                            "https://note-sharing-application.onrender.com${widget.profileData!.profile_image}",
                             height: Get.height * 0.125,
                             width: Get.height * 0.125,
                             fit: BoxFit.cover,
@@ -110,33 +109,35 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: Container(
-                              height: 24,
-                              width: 24,
-                              decoration: BoxDecoration(
-                                color: primaryColor1,
-                                borderRadius: BorderRadius.circular(4),
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: primaryColor1,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: IconButton(
+                              onPressed: () async {
+                                // profile = await UploadFileService()
+                                //     .uploadFile()
+                                //     .then((value) {
+                                //   if (value != null) {
+                                //     profilePicUrl = value.path;
+                                //   }
+                                // });
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 16,
                               ),
-                              child: IconButton(
-                                onPressed: () async {
-                                  // profile = await UploadFileService()
-                                  //     .uploadFile()
-                                  //     .then((value) {
-                                  //   if (value != null) {
-                                  //     profilePicUrl = value.path;
-                                  //   }
-                                  // });
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              )),
+                              splashRadius: 24,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: height10 * 3,
+                      height: height10 * 2,
                     ),
                     MyTextFormField(
                       controller: collegeController,
@@ -200,65 +201,69 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                       height: height10 * 3,
                     ),
                     CustomElevatedButton(
-                        onPressed: isButtonPressed
-                            ? () {}
-                            : () {
-                                if (_createProfileScreen.currentState!
-                                    .validate()) {
-                                  setState(() {
-                                    isButtonPressed = true;
-                                  });
-                                  // if (profile == null) {
-                                  //   Fluttertoast.showToast(
-                                  //       msg: "please upload image");
-                                  // } else {
-                                  try {
-                                    loginService.createProfile(
-                                        course: courseController.text,
-                                        desc: descController.text,
-                                        university: collegeController.text,
-                                        userId: widget.userData.id,
-                                        // profileImage: File(profile!.path),
-                                        year: int.parse(yearController.text),
-                                        gender: gender == 1
-                                            ? "Male"
-                                            : gender == 2
-                                                ? "Female"
-                                                : "Other");
-                                    profileData = loginService.userProfile;
-                                    if (profileData != null) {
-                                      setState(() {
-                                        isButtonPressed = false;
-                                      });
-                                      log("-------" + profileData.toString());
-                                      Get.offAll(Home(
-                                        userData: loginService.userData!,
-                                        // userProfileData: profileData,
-                                      ));
-                                    } else {
-                                      setState(() {
-                                        isButtonPressed = false;
-                                      });
-                                    }
-                                  } catch (e) {
+                      onPressed: isButtonPressed
+                          ? () {}
+                          : () {
+                              if (_createProfileScreen.currentState!
+                                  .validate()) {
+                                setState(() {
+                                  isButtonPressed = true;
+                                });
+                                // if (profile == null) {
+                                //   Fluttertoast.showToast(
+                                //       msg: "please upload image");
+                                // } else {
+                                try {
+                                  loginService.createProfile(
+                                      course: courseController.text,
+                                      desc: descController.text,
+                                      university: collegeController.text,
+                                      userId: widget.userData.id,
+                                      // profileImage: File(profile!.path),
+                                      year: int.parse(yearController.text),
+                                      gender: gender == 1
+                                          ? "Male"
+                                          : gender == 2
+                                              ? "Female"
+                                              : "Other");
+                                  profileData = loginService.userProfile;
+                                  if (profileData != null) {
+                                    setState(() {
+                                      isButtonPressed = false;
+                                    });
+                                    log("-------" + profileData.toString());
+                                    Get.offAll(Home(
+                                      userData: loginService.userData!,
+                                      // userProfileData: profileData,
+                                    ));
+                                  } else {
                                     setState(() {
                                       isButtonPressed = false;
                                     });
                                   }
-                                  // }
+                                } catch (e) {
+                                  setState(() {
+                                    isButtonPressed = false;
+                                  });
                                 }
-                              },
-                        child: isButtonPressed
-                            ? const Center(
-                                child: CircularProgressIndicator.adaptive(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white),
-                                ),
-                              )
-                            : Text("Update",
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 16),
-                                )))
+                                // }
+                              }
+                            },
+                      child: isButtonPressed
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive(
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
+                              ),
+                            )
+                          : Text(
+                              "Update",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                    ),
                   ],
                 ),
               ),
